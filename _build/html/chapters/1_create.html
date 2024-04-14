@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Данные &#8212; Geo-Py</title>
+
+    <script data-cfasync="false">
+      document.documentElement.dataset.mode =
+        localStorage.getItem("mode") || "";
+      document.documentElement.dataset.theme =
+        localStorage.getItem("theme") || "light";
+    </script>
+
+    <!-- Loaded before other Sphinx assets -->
+    <link
+      href="../_static/styles/theme.css?digest=e353d410970836974a52"
+      rel="stylesheet"
+    />
+    <link
+      href="../_static/styles/bootstrap.css?digest=e353d410970836974a52"
+      rel="stylesheet"
+    />
+    <link
+      href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52"
+      rel="stylesheet"
+    />
+
+    <link
+      href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52"
+      rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2"
+    />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link
+      rel="stylesheet"
+      href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css"
+    />
+
+    <!-- Pre-loaded scripts that we'll load fully later -->
+    <link
+      rel="preload"
+      as="script"
+      href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"
+    />
+    <link
+      rel="preload"
+      as="script"
+      href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"
+    />
+
+    <script
+      data-url_root="../"
+      id="documentation_options"
+      src="../_static/documentation_options.js"
+    ></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>
+      let toggleHintShow = "Click to show";
+    </script>
+    <script>
+      let toggleHintHide = "Click to hide";
+    </script>
+    <script>
+      let toggleOpenOnPrint = "true";
+    </script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>
+      var togglebuttonSelector = ".toggle, .admonition.dropdown";
+    </script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>
+      const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js";
+      const thebe_selector = ".thebe,.cell";
+      const thebe_selector_input = "pre";
+      const thebe_selector_output = ".output, .cell_output";
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>
+      DOCUMENTATION_OPTIONS.pagename = "chapters/1_create";
+    </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="GEO-PY in Urban Analytics" href="../intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+
+  <body
+    data-bs-spy="scroll"
+    data-bs-target=".bd-toc-nav"
+    data-offset="180"
+    data-bs-root-margin="0px 0px -60%"
+    data-default-mode=""
+  >
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <input
+      type="checkbox"
+      class="sidebar-toggle"
+      name="__primary"
+      id="__primary"
+    />
+    <label class="overlay overlay-primary" for="__primary"></label>
+
+    <input
+      type="checkbox"
+      class="sidebar-toggle"
+      name="__secondary"
+      id="__secondary"
+    />
+    <label class="overlay overlay-secondary" for="__secondary"></label>
+
+    <div class="search-button__wrapper">
+      <div class="search-button__overlay"></div>
+      <div class="search-button__search-container">
+        <form
+          class="bd-search d-flex align-items-center"
+          action="../search.html"
+          method="get"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="search"
+            class="form-control"
+            name="q"
+            id="search-input"
+            placeholder="Search this book..."
+            aria-label="Search this book..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <span class="search-button__kbd-shortcut"
+            ><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span
+          >
+        </form>
+      </div>
+    </div>
+
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar"></nav>
+
+    <div class="bd-container">
+      <div class="bd-container__inner bd-page-width">
+        <div class="bd-sidebar-primary bd-sidebar">
+          <div class="sidebar-header-items sidebar-primary__section"></div>
+
+          <div class="sidebar-primary-items__start sidebar-primary__section">
+            <div class="sidebar-primary-item">
+              <a class="navbar-brand logo" href="../intro.html">
+                <img
+                  src="../_static/logo.png"
+                  class="logo__image only-light"
+                  alt="Logo image"
+                />
+                <script>
+                  document.write(
+                    `<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`
+                  );
+                </script>
+              </a>
+            </div>
+            <div class="sidebar-primary-item">
+              <nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+                <div class="bd-toc-item navbar-nav active">
+                  <ul class="nav bd-sidenav bd-sidenav__home-link">
+                    <li class="toctree-l1">
+                      <a class="reference internal" href="../intro.html">
+                        GEO-PY in Urban Analytics
+                      </a>
+                    </li>
+                  </ul>
+                  <ul class="current nav bd-sidenav">
+                    <li class="toctree-l1 current active">
+                      <a class="current reference internal" href="#">Данные</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+
+          <div
+            class="sidebar-primary-items__end sidebar-primary__section"
+          ></div>
+
+          <div id="rtd-footer-container"></div>
+        </div>
+
+        <main id="main-content" class="bd-main">
+          <div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              <div class="bd-header-article">
+                <div class="header-article-items header-article__inner">
+                  <div class="header-article-items__start">
+                    <div class="header-article-item">
+                      <label
+                        class="sidebar-toggle primary-toggle btn btn-sm"
+                        for="__primary"
+                        title="Toggle primary sidebar"
+                        data-bs-placement="bottom"
+                        data-bs-toggle="tooltip"
+                      >
+                        <span class="fa-solid fa-bars"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="header-article-items__end">
+                    <div class="header-article-item">
+                      <div class="article-header-buttons">
+                        <a
+                          href="https://github.com/bella-mir/geo-py"
+                          target="_blank"
+                          class="btn btn-sm btn-source-repository-button"
+                          title="Source repository"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                        >
+                          <span class="btn__icon-container">
+                            <i class="fab fa-github"></i>
+                          </span>
+                        </a>
+
+                        <div class="dropdown dropdown-download-buttons">
+                          <button
+                            class="btn dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-label="Download this page"
+                          >
+                            <i class="fas fa-download"></i>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li>
+                              <a
+                                href="../_sources/chapters/1_create.ipynb"
+                                target="_blank"
+                                class="btn btn-sm btn-download-source-button dropdown-item"
+                                title="Download source file"
+                                data-bs-placement="left"
+                                data-bs-toggle="tooltip"
+                              >
+                                <span class="btn__icon-container">
+                                  <i class="fas fa-file"></i>
+                                </span>
+                                <span class="btn__text-container">.ipynb</span>
+                              </a>
+                            </li>
+
+                            <li>
+                              <button
+                                onclick="window.print()"
+                                class="btn btn-sm btn-download-pdf-button dropdown-item"
+                                title="Print to PDF"
+                                data-bs-placement="left"
+                                data-bs-toggle="tooltip"
+                              >
+                                <span class="btn__icon-container">
+                                  <i class="fas fa-file-pdf"></i>
+                                </span>
+                                <span class="btn__text-container">.pdf</span>
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <button
+                          onclick="toggleFullScreen()"
+                          class="btn btn-sm btn-fullscreen-button"
+                          title="Fullscreen mode"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                        >
+                          <span class="btn__icon-container">
+                            <i class="fas fa-expand"></i>
+                          </span>
+                        </button>
+
+                        <script>
+                          document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+                        </script>
+
+                        <script>
+                          document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+                        </script>
+                        <label
+                          class="sidebar-toggle secondary-toggle btn btn-sm"
+                          for="__secondary"
+                          title="Toggle secondary sidebar"
+                          data-bs-placement="bottom"
+                          data-bs-toggle="tooltip"
+                        >
+                          <span class="fa-solid fa-list"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Данные</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                  <div id="jb-print-toc">
+                    <div>
+                      <h2>Contents</h2>
+                    </div>
+                    <nav aria-label="Page">
+                      <ul class="visible nav section-nav flex-column">
+                        <li class="toc-h2 nav-item toc-entry">
+                          <a class="reference internal nav-link" href="#id2"
+                            >Импортируем библиотеки</a
+                          >
+                        </li>
+                        <li class="toc-h2 nav-item toc-entry">
+                          <a class="reference internal nav-link" href="#id3"
+                            >1.1 Читаем</a
+                          >
+                        </li>
+                        <li class="toc-h2 nav-item toc-entry">
+                          <a class="reference internal nav-link" href="#id4"
+                            >1.2 Создаем</a
+                          >
+                          <ul class="nav section-nav flex-column">
+                            <li class="toc-h3 nav-item toc-entry">
+                              <a class="reference internal nav-link" href="#id5"
+                                >Пространственные данные из координат</a
+                              >
+                            </li>
+                            <li class="toc-h3 nav-item toc-entry">
+                              <a class="reference internal nav-link" href="#id6"
+                                >Сохраненяем результат</a
+                              >
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="toc-h2 nav-item toc-entry">
+                          <a class="reference internal nav-link" href="#osm"
+                            >1.3 Экспортируем из OSM</a
+                          >
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+
+              <div id="searchbox"></div>
+              <article class="bd-article" role="main">
+                <div class="tex2jax_ignore mathjax_ignore section" id="id1">
+                  <h1>
+                    Данные<a
+                      class="headerlink"
+                      href="#id1"
+                      title="Permalink to this heading"
+                      >#</a
+                    >
+                  </h1>
+                  <p>
+                    Для аналитики нужны данные. Как их загрузить в проект и где
+                    их можно получить, мы разберем в этом разделе
+                  </p>
+                  <div class="section" id="id2">
+                    <h2>
+                      Импортируем библиотеки<a
+                        class="headerlink"
+                        href="#id2"
+                        title="Permalink to this heading"
+                        >#</a
+                      >
+                    </h2>
+                    <div class="cell docutils container">
+                      <div class="cell_input docutils container">
+                        <div class="highlight-ipython3 notranslate">
+                          <div class="highlight">
+                            <pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">osmnx</span> <span class="k">as</span> <span class="nn">ox</span>
+</pre>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p>и коротко расскажем о библиотеках:</p>
+                    <p>
+                      <strong>Pandas</strong> пригодится для обработки и анализа
+                      струкутрированных данных (аля табличек)
+                    </p>
+                    <p>
+                      <strong>Geopandas</strong> расширяет функциональность
+                      Pandas для работы с геопространственными данными &lt;3
+                    </p>
+                    <p>
+                      <strong>OSMnx</strong> помогает выгружать данные из
+                      OpenStreetMap
+                    </p>
+                  </div>
+                  <div class="section" id="id3">
+                    <h2>
+                      1.1 Читаем<a
+                        class="headerlink"
+                        href="#id3"
+                        title="Permalink to this heading"
+                        >#</a
+                      >
+                    </h2>
+                  </div>
+                  <div class="section" id="id4">
+                    <h2>
+                      1.2 Создаем<a
+                        class="headerlink"
+                        href="#id4"
+                        title="Permalink to this heading"
+                        >#</a
+                      >
+                    </h2>
+                    <div class="section" id="id5">
+                      <h3>
+                        Пространственные данные из координат<a
+                          class="headerlink"
+                          href="#id5"
+                          title="Permalink to this heading"
+                          >#</a
+                        >
+                      </h3>
+                      <p>
+                        Долготу и широту присваиваем переменным lat и lon,
+                        соответственно. Также перемнной point присавиваем
+                        словарь, в который записываем координты и название
+                        объекта
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">lat</span> <span class="o">=</span>  <span class="mf">59.9316667</span>
+<span class="n">lon</span> <span class="o">=</span>  <span class="mf">30.3363889</span>
+
+<span class="n">point</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Longitude&#39;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span> <span class="s1">&#39;Latitude&#39;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;Alexandrinsky theater&#39;</span><span class="p">}</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        На основе словаря (point) создаем DataFrame (point_df) и
+                        смотрим на получившийся набор данных, чтобы убедиться,
+                        что с ним все хорошо
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">point_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">point_df</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell_output docutils container">
+                          <div class="output text_html">
+                            <div>
+                              <style scoped>
+                                .dataframe tbody tr th:only-of-type {
+                                  vertical-align: middle;
+                                }
+
+                                .dataframe tbody tr th {
+                                  vertical-align: top;
+                                }
+
+                                .dataframe thead th {
+                                  text-align: right;
+                                }
+                              </style>
+                              <table border="1" class="dataframe">
+                                <thead>
+                                  <tr style="text-align: right">
+                                    <th></th>
+                                    <th>Longitude</th>
+                                    <th>Latitude</th>
+                                    <th>name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th>1</th>
+                                    <td>30.336389</td>
+                                    <td>59.931667</td>
+                                    <td>Alexandrinsky theater</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        На основе DataFrame (point_df) создаем набор
+                        пространственных данных - GeoDataFrame с помощью
+                        библиотеки geopandas. Это очень просто! Указываем наш
+                        массив данных (point_df), создаем гометрию объекта на
+                        основе координат и указывеам систему коордиант
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">point_gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">point_df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]),</span> <span class="n">crs</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        Смотрим на получившийся DataFrame (point_gdf), чтобы
+                        убедиться, что с ним все хорошо и играем в игру найди
+                        отличие от point_df
+                      </p>
+                      <p>(в чем разница - расскажите мне)</p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">point_gdf</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell_output docutils container">
+                          <div class="output text_html">
+                            <div>
+                              <style scoped>
+                                .dataframe tbody tr th:only-of-type {
+                                  vertical-align: middle;
+                                }
+
+                                .dataframe tbody tr th {
+                                  vertical-align: top;
+                                }
+
+                                .dataframe thead th {
+                                  text-align: right;
+                                }
+                              </style>
+                              <table border="1" class="dataframe">
+                                <thead>
+                                  <tr style="text-align: right">
+                                    <th></th>
+                                    <th>Longitude</th>
+                                    <th>Latitude</th>
+                                    <th>name</th>
+                                    <th>geometry</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th>1</th>
+                                    <td>30.336389</td>
+                                    <td>59.931667</td>
+                                    <td>Alexandrinsky theater</td>
+                                    <td>POINT (30.33639 59.93167)</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        Согласитесь, что по результатам выше не совсем понятно,
+                        получили мы новый массив с дополнительным столбцом или
+                        это уже принципиально иной формат данных
+                      </p>
+                      <p>
+                        В первую очередь, мы можем проверить, используя функцию
+                        type(), которая вернет нам тип объекта
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">point_df</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">point_gdf</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Тип point_df: </span><span class="si">%s</span><span class="s2">, Тип point_gdf: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">point_df</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">point_gdf</span><span class="p">)))</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell_output docutils container">
+                          <div
+                            class="output stream highlight-myst-ansi notranslate"
+                          >
+                            <div class="highlight">
+                              <pre><span></span>False
+Тип point_df: &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;, Тип point_gdf: &lt;class &#39;geopandas.geodataframe.GeoDataFrame&#39;&gt;
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        Дествительно, в переменных содержатся данные разного
+                        типа! А point_gdf - GeoDataFrame. Значит, мы успешно
+                        создали набор пространственных данных и можем ~~собой
+                        гордиться~~ теперь отобразить данные на карте.
+                      </p>
+                      <p>
+                        Для этого в этот раз попробуем использовать метод
+                        explore, который позволит нам с легкостью
+                        визуализировать данные на интерактивной карте. Этот
+                        метод использует библиотеки folium, mapclassify и
+                        maplotlib (важно, чтобы они были установлены)
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">point_gdf</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell_output docutils container">
+                          <div class="output text_html">
+                            <div style="width: 100%">
+                              <div
+                                style="
+                                  position: relative;
+                                  width: 100%;
+                                  height: 0;
+                                  padding-bottom: 60%;
+                                "
+                              >
+                                <span style="color: #565656"
+                                  >Make this Notebook Trusted to load map: File
+                                  -> Trust Notebook</span
+                                ><iframe
+                                  srcdoc='&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv="content-type" content="text/html; charset=UTF-8" /&gt;
+    
+        &lt;script&gt;
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        &lt;/script&gt;
+    
+    &lt;style&gt;html, body {width: 100%;height: 100%;margin: 0;padding: 0;}&lt;/style&gt;
+    &lt;style&gt;#map {position:absolute;top:0;bottom:0;right:0;left:0;}&lt;/style&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"&gt;&lt;/script&gt;
+    &lt;script src="https://code.jquery.com/jquery-1.12.4.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/&gt;
+    &lt;link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/&gt;
+    
+            &lt;meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /&gt;
+            &lt;style&gt;
+                #map_a109d58bb46b5a8c046b7caf5a4490f4 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+        
+    
+                    &lt;style&gt;
+                        .foliumtooltip {
+                            
+                        }
+                       .foliumtooltip table{
+                            margin: auto;
+                        }
+                        .foliumtooltip tr{
+                            text-align: left;
+                        }
+                        .foliumtooltip th{
+                            padding: 2px; padding-right: 8px;
+                        }
+                    &lt;/style&gt;
+            
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+            &lt;div class="folium-map" id="map_a109d58bb46b5a8c046b7caf5a4490f4" &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_a109d58bb46b5a8c046b7caf5a4490f4 = L.map(
+                "map_a109d58bb46b5a8c046b7caf5a4490f4",
+                {
+                    center: [59.9316667, 30.3363889],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 10,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_a109d58bb46b5a8c046b7caf5a4490f4);
+
+            
+
+        
+    
+            var tile_layer_e86ec796ba904d5301b77eb55ac66279 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_a109d58bb46b5a8c046b7caf5a4490f4);
+        
+    
+            map_a109d58bb46b5a8c046b7caf5a4490f4.fitBounds(
+                [[59.9316667, 30.3363889], [59.9316667, 30.3363889]],
+                {}
+            );
+        
+    
+        function geo_json_d60f5f0ee2b9bf452776a0ffca317d73_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"fillOpacity": 0.5, "weight": 2};
+            }
+        }
+        function geo_json_d60f5f0ee2b9bf452776a0ffca317d73_highlighter(feature) {
+            switch(feature.id) {
+                default:
+                    return {"fillOpacity": 0.75};
+            }
+        }
+        function geo_json_d60f5f0ee2b9bf452776a0ffca317d73_pointToLayer(feature, latlng) {
+            var opts = {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2, "stroke": true, "weight": 3};
+            
+            let style = geo_json_d60f5f0ee2b9bf452776a0ffca317d73_styler(feature)
+            Object.assign(opts, style)
+            
+            return new L.CircleMarker(latlng, opts)
+        }
+
+        function geo_json_d60f5f0ee2b9bf452776a0ffca317d73_onEachFeature(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                        geo_json_d60f5f0ee2b9bf452776a0ffca317d73.resetStyle(e.target);
+                    }
+                },
+                mouseover: function(e) {
+                    if(typeof e.target.setStyle === "function"){
+                        const highlightStyle = geo_json_d60f5f0ee2b9bf452776a0ffca317d73_highlighter(e.target.feature)
+                        e.target.setStyle(highlightStyle);
+                    }
+                },
+            });
+        };
+        var geo_json_d60f5f0ee2b9bf452776a0ffca317d73 = L.geoJson(null, {
+                onEachFeature: geo_json_d60f5f0ee2b9bf452776a0ffca317d73_onEachFeature,
+            
+                style: geo_json_d60f5f0ee2b9bf452776a0ffca317d73_styler,
+                pointToLayer: geo_json_d60f5f0ee2b9bf452776a0ffca317d73_pointToLayer
+        });
+
+        function geo_json_d60f5f0ee2b9bf452776a0ffca317d73_add (data) {
+            geo_json_d60f5f0ee2b9bf452776a0ffca317d73
+                .addData(data)
+                .addTo(map_a109d58bb46b5a8c046b7caf5a4490f4);
+        }
+            geo_json_d60f5f0ee2b9bf452776a0ffca317d73_add({"bbox": [30.3363889, 59.9316667, 30.3363889, 59.9316667], "features": [{"bbox": [30.3363889, 59.9316667, 30.3363889, 59.9316667], "geometry": {"coordinates": [30.3363889, 59.9316667], "type": "Point"}, "id": "1", "properties": {"Latitude": 59.9316667, "Longitude": 30.3363889, "name": "Alexandrinsky theater"}, "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+    geo_json_d60f5f0ee2b9bf452776a0ffca317d73.bindTooltip(
+    function(layer){
+    let div = L.DomUtil.create(&#x27;div&#x27;);
+    
+    let handleObject = feature=&gt;typeof(feature)==&#x27;object&#x27; ? JSON.stringify(feature) : feature;
+    let fields = ["Longitude", "Latitude", "name"];
+    let aliases = ["Longitude", "Latitude", "name"];
+    let table = &#x27;&lt;table&gt;&#x27; +
+        String(
+        fields.map(
+        (v,i)=&gt;
+        `&lt;tr&gt;
+            &lt;th&gt;${aliases[i]}&lt;/th&gt;
+            
+            &lt;td&gt;${handleObject(layer.feature.properties[v])}&lt;/td&gt;
+        &lt;/tr&gt;`).join(&#x27;&#x27;))
+    +&#x27;&lt;/table&gt;&#x27;;
+    div.innerHTML=table;
+    
+    return div
+    }
+    ,{"className": "foliumtooltip", "sticky": true});
+                     
+&lt;/script&gt;
+&lt;/html&gt;'
+                                  style="
+                                    position: absolute;
+                                    width: 100%;
+                                    height: 100%;
+                                    left: 0;
+                                    top: 0;
+                                    border: none !important;
+                                  "
+                                  allowfullscreen
+                                  webkitallowfullscreen
+                                  mozallowfullscreen
+                                ></iframe>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p>
+                        Вуаля! Мы увидели на интерактивной карте точку, которую
+                        создали! Она не улетела в ни в Гвинейский залив, ни в
+                        Японской море, ни в Антарктику благодаря тому, что мы не
+                        забли про проекцию, и оказалась там, где и должна быть -
+                        в Санкт-Петербурге &lt;3
+                      </p>
+                    </div>
+                    <div class="section" id="id6">
+                      <h3>
+                        Сохраненяем результат<a
+                          class="headerlink"
+                          href="#id6"
+                          title="Permalink to this heading"
+                          >#</a
+                        >
+                      </h3>
+                      <p>
+                        Теперь остается сохранить данный в любой из известных
+                        нам форматов
+                      </p>
+                      <div class="cell docutils container">
+                        <div class="cell_input docutils container">
+                          <div class="highlight-ipython3 notranslate">
+                            <div class="highlight">
+                              <pre><span></span><span class="n">point_gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s1">&#39;data/dataframe.gpkg&#39;</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;GPKG&#39;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> 
+</pre>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="section" id="osm">
+                    <h2>
+                      1.3 Экспортируем из OSM<a
+                        class="headerlink"
+                        href="#osm"
+                        title="Permalink to this heading"
+                        >#</a
+                      >
+                    </h2>
+                  </div>
+                </div>
+
+                <script type="text/x-thebe-config">
+                  {
+                      requestKernel: true,
+                      binderOptions: {
+                          repo: "binder-examples/jupyter-stacks-datascience",
+                          ref: "master",
+                      },
+                      codeMirrorConfig: {
+                          theme: "abcdef",
+                          mode: "python"
+                      },
+                      kernelOptions: {
+                          name: "python3",
+                          path: "./chapters"
+                      },
+                      predefinedOutput: true
+                  }
+                </script>
+                <script>
+                  kernelName = "python3";
+                </script>
+              </article>
+
+              <footer class="bd-footer-article">
+                <div class="footer-article-items footer-article__inner">
+                  <div class="footer-article-item">
+                    <!-- Previous / next buttons -->
+                    <div class="prev-next-area">
+                      <a
+                        class="left-prev"
+                        href="../intro.html"
+                        title="previous page"
+                      >
+                        <i class="fa-solid fa-angle-left"></i>
+                        <div class="prev-next-info">
+                          <p class="prev-next-subtitle">previous</p>
+                          <p class="prev-next-title">
+                            GEO-PY in Urban Analytics
+                          </p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div>
+
+            <div class="bd-sidebar-secondary bd-toc">
+              <div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="sidebar-secondary-item">
+                  <div class="page-toc tocsection onthispage">
+                    <i class="fa-solid fa-list"></i> Contents
+                  </div>
+                  <nav class="bd-toc-nav page-toc">
+                    <ul class="visible nav section-nav flex-column">
+                      <li class="toc-h2 nav-item toc-entry">
+                        <a class="reference internal nav-link" href="#id2"
+                          >Импортируем библиотеки</a
+                        >
+                      </li>
+                      <li class="toc-h2 nav-item toc-entry">
+                        <a class="reference internal nav-link" href="#id3"
+                          >1.1 Читаем</a
+                        >
+                      </li>
+                      <li class="toc-h2 nav-item toc-entry">
+                        <a class="reference internal nav-link" href="#id4"
+                          >1.2 Создаем</a
+                        >
+                        <ul class="nav section-nav flex-column">
+                          <li class="toc-h3 nav-item toc-entry">
+                            <a class="reference internal nav-link" href="#id5"
+                              >Пространственные данные из координат</a
+                            >
+                          </li>
+                          <li class="toc-h3 nav-item toc-entry">
+                            <a class="reference internal nav-link" href="#id6"
+                              >Сохраненяем результат</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="toc-h2 nav-item toc-entry">
+                        <a class="reference internal nav-link" href="#osm"
+                          >1.3 Экспортируем из OSM</a
+                        >
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner container">
+              <div class="footer-item">
+                <p class="component-author">By Bella Mironova</p>
+              </div>
+
+              <div class="footer-item">
+                <p class="copyright">
+                  © Copyright 2023.
+                  <br />
+                </p>
+              </div>
+
+              <div class="footer-item"></div>
+
+              <div class="footer-item"></div>
+            </div>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts loaded after <body> so the DOM is not blocked -->
+    <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+    <footer class="bd-footer"></footer>
+  </body>
+</html>

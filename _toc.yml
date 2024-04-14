@@ -1,9 +1,15 @@
 # Table of contents
 # Learn more at jupyter-book build
 
+
 format: jb-book
 root: intro
-# chapters:
-# - file: markdown
+chapters:
+    - file: chapters/1_data
+
 # - file: notebooks
 # - file: markdown-notebooks
+
+
+
+

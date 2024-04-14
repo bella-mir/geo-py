@@ -2,7 +2,8 @@
 # Learn more at https://jupyterbook.org/customize/config.html
 
 title: Geo-Py
-author: Bella Mir
+author: Bella Mironova
+copyright: 2023
 logo: logo.png
 
 # Force re-execution of notebooks on each build.
