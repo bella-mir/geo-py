@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Данные &#8212; Geo-Py</title>
+    <title>I. Данные &#8212; Geo-Py</title>
   
   
   
@@ -155,7 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Данные</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">I. Данные</a></li>
 </ul>
 
     </div>
@@ -307,7 +307,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Данные</h1>
+    <h1>I. Данные</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -317,14 +317,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Импортируем библиотеки</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 Читаем</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.2 Создаем</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Пространственные данные из координат</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Сохраненяем результат</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Импортируем библиотеки</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 Создаем</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Пространственные данные из координат</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Сохраненяем результат</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#osm">1.3 Экспортируем из OSM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#osm">1.2 Экспортируем из OSM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3 Читаем</a></li>
 </ul>
             </nav>
         </div>
@@ -336,11 +336,17 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="tex2jax_ignore mathjax_ignore section" id="id1">
-<h1>Данные<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
-<p>Для аналитики нужны данные. Как их загрузить в проект и где их можно получить, мы разберем в этом разделе</p>
-<div class="section" id="id2">
-<h2>Импортируем библиотеки<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="i">
+<h1>I. Данные<a class="headerlink" href="#i" title="Permalink to this heading">#</a></h1>
+<p>Для аналитики нужны данные, без них точно ничего не получится:)</p>
+<p>В этом разделе мы посмотрим как:</p>
+<ul class="simple">
+<li><p>создать набор данных на основе координат</p></li>
+<li><p>загрузить существующие данные в проект</p></li>
+<li><p>экспортировать данные из OpenStreetMap</p></li>
+</ul>
+<div class="section" id="id1">
+<h2>Импортируем библиотеки<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -351,17 +357,16 @@ document.write(`
 </div>
 </div>
 <p>и коротко расскажем о библиотеках:</p>
-<p><strong>Pandas</strong> пригодится для обработки и анализа струкутрированных данных (аля табличек)</p>
+<p><strong>Pandas</strong> пригодится для обработки и анализа струкутрированных данных (простыми словами - для работы с табличками)</p>
 <p><strong>Geopandas</strong> расширяет функциональность Pandas для работы с геопространственными данными &lt;3</p>
 <p><strong>OSMnx</strong> помогает выгружать данные из OpenStreetMap</p>
 </div>
+<div class="section" id="id2">
+<h2>1.1 Создаем<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>В первых двух разделах мы представим, что у нас совсем нет данных, и нужно начинать с чистого листа</p>
+<p>Знаем только координаты интересующего нас объекта: 59°55′54″ с. ш. 30°20′11″ в. д. Именно его мы хотим отобразить на карте</p>
 <div class="section" id="id3">
-<h2>1.1 Читаем<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
-</div>
-<div class="section" id="id4">
-<h2>1.2 Создаем<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
-<div class="section" id="id5">
-<h3>Пространственные данные из координат<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<h3>Пространственные данные из координат<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <p>Долготу и широту присваиваем переменным lat и lon, соответственно. Также перемнной point присавиваем словарь, в который записываем координты и название объекта</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -523,7 +528,7 @@ document.write(`
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_4723135eec73dfef1efd7e5b74f4a3cb {
+                #map_854ee648e015f044c1be1c4e7249a90e {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -553,14 +558,14 @@ document.write(`
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_4723135eec73dfef1efd7e5b74f4a3cb&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_854ee648e015f044c1be1c4e7249a90e&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_4723135eec73dfef1efd7e5b74f4a3cb = L.map(
-                &quot;map_4723135eec73dfef1efd7e5b74f4a3cb&quot;,
+            var map_854ee648e015f044c1be1c4e7249a90e = L.map(
+                &quot;map_854ee648e015f044c1be1c4e7249a90e&quot;,
                 {
                     center: [59.9316667, 30.3363889],
                     crs: L.CRS.EPSG3857,
@@ -569,77 +574,77 @@ document.write(`
                     preferCanvas: false,
                 }
             );
-            L.control.scale().addTo(map_4723135eec73dfef1efd7e5b74f4a3cb);
+            L.control.scale().addTo(map_854ee648e015f044c1be1c4e7249a90e);
 
             
 
         
     
-            var tile_layer_193ce2b6d6935931796c4b28377da6c6 = L.tileLayer(
+            var tile_layer_3ad178bdff577e9f36c3eb4ca49c9a37 = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_4723135eec73dfef1efd7e5b74f4a3cb);
+            ).addTo(map_854ee648e015f044c1be1c4e7249a90e);
         
     
-            map_4723135eec73dfef1efd7e5b74f4a3cb.fitBounds(
+            map_854ee648e015f044c1be1c4e7249a90e.fitBounds(
                 [[59.9316667, 30.3363889], [59.9316667, 30.3363889]],
                 {}
             );
         
     
-        function geo_json_20ec45b4734898739c7a0685bafe1f3a_styler(feature) {
+        function geo_json_05744ab20296df8ea022878a02f4f224_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.5, &quot;weight&quot;: 2};
             }
         }
-        function geo_json_20ec45b4734898739c7a0685bafe1f3a_highlighter(feature) {
+        function geo_json_05744ab20296df8ea022878a02f4f224_highlighter(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.75};
             }
         }
-        function geo_json_20ec45b4734898739c7a0685bafe1f3a_pointToLayer(feature, latlng) {
+        function geo_json_05744ab20296df8ea022878a02f4f224_pointToLayer(feature, latlng) {
             var opts = {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;#3388ff&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;#3388ff&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 2, &quot;stroke&quot;: true, &quot;weight&quot;: 3};
             
-            let style = geo_json_20ec45b4734898739c7a0685bafe1f3a_styler(feature)
+            let style = geo_json_05744ab20296df8ea022878a02f4f224_styler(feature)
             Object.assign(opts, style)
             
             return new L.CircleMarker(latlng, opts)
         }
 
-        function geo_json_20ec45b4734898739c7a0685bafe1f3a_onEachFeature(feature, layer) {
+        function geo_json_05744ab20296df8ea022878a02f4f224_onEachFeature(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        geo_json_20ec45b4734898739c7a0685bafe1f3a.resetStyle(e.target);
+                        geo_json_05744ab20296df8ea022878a02f4f224.resetStyle(e.target);
                     }
                 },
                 mouseover: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        const highlightStyle = geo_json_20ec45b4734898739c7a0685bafe1f3a_highlighter(e.target.feature)
+                        const highlightStyle = geo_json_05744ab20296df8ea022878a02f4f224_highlighter(e.target.feature)
                         e.target.setStyle(highlightStyle);
                     }
                 },
             });
         };
-        var geo_json_20ec45b4734898739c7a0685bafe1f3a = L.geoJson(null, {
-                onEachFeature: geo_json_20ec45b4734898739c7a0685bafe1f3a_onEachFeature,
+        var geo_json_05744ab20296df8ea022878a02f4f224 = L.geoJson(null, {
+                onEachFeature: geo_json_05744ab20296df8ea022878a02f4f224_onEachFeature,
             
-                style: geo_json_20ec45b4734898739c7a0685bafe1f3a_styler,
-                pointToLayer: geo_json_20ec45b4734898739c7a0685bafe1f3a_pointToLayer
+                style: geo_json_05744ab20296df8ea022878a02f4f224_styler,
+                pointToLayer: geo_json_05744ab20296df8ea022878a02f4f224_pointToLayer
         });
 
-        function geo_json_20ec45b4734898739c7a0685bafe1f3a_add (data) {
-            geo_json_20ec45b4734898739c7a0685bafe1f3a
+        function geo_json_05744ab20296df8ea022878a02f4f224_add (data) {
+            geo_json_05744ab20296df8ea022878a02f4f224
                 .addData(data)
-                .addTo(map_4723135eec73dfef1efd7e5b74f4a3cb);
+                .addTo(map_854ee648e015f044c1be1c4e7249a90e);
         }
-            geo_json_20ec45b4734898739c7a0685bafe1f3a_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_05744ab20296df8ea022878a02f4f224_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-    geo_json_20ec45b4734898739c7a0685bafe1f3a.bindTooltip(
+    geo_json_05744ab20296df8ea022878a02f4f224.bindTooltip(
     function(layer){
     let div = L.DomUtil.create(&#x27;div&#x27;);
     
@@ -667,8 +672,8 @@ document.write(`
 </div>
 <p>Вуаля! Мы увидели на интерактивной карте точку, которую создали! Она не улетела в ни в Гвинейский залив, ни в Японской море, ни в Антарктику благодаря тому, что мы не забли про проекцию, и оказалась там, где и должна быть - в Санкт-Петербурге &lt;3</p>
 </div>
-<div class="section" id="id6">
-<h3>Сохраненяем результат<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<div class="section" id="id4">
+<h3>Сохраненяем результат<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <p>Теперь остается сохранить данный в любой из известных нам форматов</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -680,7 +685,10 @@ document.write(`
 </div>
 </div>
 <div class="section" id="osm">
-<h2>1.3 Экспортируем из OSM<a class="headerlink" href="#osm" title="Permalink to this heading">#</a></h2>
+<h2>1.2 Экспортируем из OSM<a class="headerlink" href="#osm" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="id5">
+<h2>1.3 Читаем<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
 </div>
 </div>
 
@@ -742,14 +750,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Импортируем библиотеки</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 Читаем</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.2 Создаем</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Пространственные данные из координат</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Сохраненяем результат</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Импортируем библиотеки</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.1 Создаем</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Пространственные данные из координат</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Сохраненяем результат</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#osm">1.3 Экспортируем из OSM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#osm">1.2 Экспортируем из OSM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.3 Читаем</a></li>
 </ul>
   </nav></div>
 
