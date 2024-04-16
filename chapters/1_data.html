@@ -356,9 +356,9 @@ document.write(`
 </div>
 </div>
 </div>
-<p>и коротко расскажем о библиотеках:</p>
+<p>и коротко расскажем о них:</p>
 <p><strong>Pandas</strong> пригодится для обработки и анализа струкутрированных данных (простыми словами - для работы с табличками)</p>
-<p><strong>Geopandas</strong> расширяет функциональность Pandas для работы с геопространственными данными &lt;3</p>
+<p><strong>Geopandas</strong> расширяет функциональность Pandas, чтобы мы могли работать с геопространственными данными &lt;3</p>
 <p><strong>OSMnx</strong> помогает выгружать данные из OpenStreetMap</p>
 </div>
 <div class="section" id="id2">
@@ -368,6 +368,7 @@ document.write(`
 <div class="section" id="id3">
 <h3>Пространственные данные из координат<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <p>Долготу и широту присваиваем переменным lat и lon, соответственно. Также перемнной point присавиваем словарь, в который записываем координты и название объекта</p>
+<p><strong>Словарь</strong> — это тип данных, представляющий собой коллекцию пар «ключ-значение»</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span>  <span class="mf">59.9316667</span>
@@ -379,6 +380,7 @@ document.write(`
 </div>
 </div>
 <p>На основе словаря (point) создаем DataFrame (point_df) и смотрим на получившийся набор данных, чтобы убедиться, что с ним все хорошо</p>
+<p><storng>DataFrame</strong> - это структура данных в библиотеке Pandas, которая представляет собой двумерный массив с индексами для строк и столбцов (aka табличка)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -422,7 +424,9 @@ document.write(`
 </table>
 </div></div></div>
 </div>
-<p>На основе DataFrame (point_df) создаем набор пространственных данных - GeoDataFrame с помощью библиотеки geopandas. Это очень просто! Указываем наш массив данных (point_df), создаем гометрию объекта на основе координат и указывеам систему коордиант</p>
+<p>На основе DataFrame (point_df) создаем набор пространственных данных - GeoDataFrame с помощью библиотеки geopandas. Это очень просто! Указываем наш массив данных (point_df), определяем геомтерию на основе координат и не забываем про систему коордиант!</p>
+<p>Мы используем CRS 4326 - WGS84 - географическую систему координат, так как у нас широта и долгота в градусах.</p>
+<p><storng>GeoDataFrame</strong> - это расширенный DataFrame, у которого есть поле с геометрией объекта</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">point_df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]),</span> <span class="n">crs</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
@@ -430,8 +434,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Смотрим на получившийся DataFrame (point_gdf), чтобы убедиться, что с ним все хорошо и играем в игру найди отличие от point_df</p>
-<p>(в чем разница - расскажите мне)</p>
+<p>Смотрим на получившийся GeoDataFrame (point_gdf), чтобы убедиться, что действительно добавилось поле geometry</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_gdf</span>
@@ -476,7 +479,7 @@ document.write(`
 </div></div></div>
 </div>
 <p>Согласитесь, что по результатам выше не совсем понятно, получили мы новый массив с дополнительным столбцом или это уже принципиально иной формат данных</p>
-<p>В первую очередь, мы можем проверить, используя функцию type(), которая вернет нам тип объекта</p>
+<p>Тип данных мы можем проверить, используя функцию type()</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">point_df</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">point_gdf</span><span class="p">))</span>
@@ -492,8 +495,9 @@ document.write(`
 </div>
 </div>
 </div>
+<p><em>Загадочная запись во второй строке внутри print() – форматирование строки с помощью оператора %. В ситуации, когда нужно подставить в строку значения из переменных - очень удобно</em></p>
 <p>Дествительно, в переменных содержатся данные разного типа! А point_gdf - GeoDataFrame. Значит, мы успешно создали набор пространственных данных и можем ~~собой гордиться~~ теперь отобразить данные на карте.</p>
-<p>Для этого в этот раз попробуем использовать метод explore, который позволит нам с легкостью визуализировать данные на интерактивной карте. Этот метод использует библиотеки folium, mapclassify и maplotlib (важно, чтобы они были установлены)</p>
+<p>Для этого воспользуемся методом explore, который позволит нам с легкостью визуализировать данные на интерактивной карте. Он использует библиотеки folium, mapclassify и maplotlib (важно, чтобы они были установлены), импортировать в проект их не нужно</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_gdf</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
@@ -528,7 +532,7 @@ document.write(`
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_407b5e1b272d1e7336aada9c016ea63a {
+                #map_78a236a9539520f9e034fa7728ec6024 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -558,14 +562,14 @@ document.write(`
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_407b5e1b272d1e7336aada9c016ea63a&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_78a236a9539520f9e034fa7728ec6024&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_407b5e1b272d1e7336aada9c016ea63a = L.map(
-                &quot;map_407b5e1b272d1e7336aada9c016ea63a&quot;,
+            var map_78a236a9539520f9e034fa7728ec6024 = L.map(
+                &quot;map_78a236a9539520f9e034fa7728ec6024&quot;,
                 {
                     center: [59.9316667, 30.3363889],
                     crs: L.CRS.EPSG3857,
@@ -574,77 +578,77 @@ document.write(`
                     preferCanvas: false,
                 }
             );
-            L.control.scale().addTo(map_407b5e1b272d1e7336aada9c016ea63a);
+            L.control.scale().addTo(map_78a236a9539520f9e034fa7728ec6024);
 
             
 
         
     
-            var tile_layer_f660afc6a07bdd4e6b4ce7a4b8c373f1 = L.tileLayer(
+            var tile_layer_503d9df74efd9ce46a531eb320a92a4b = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_407b5e1b272d1e7336aada9c016ea63a);
+            ).addTo(map_78a236a9539520f9e034fa7728ec6024);
         
     
-            map_407b5e1b272d1e7336aada9c016ea63a.fitBounds(
+            map_78a236a9539520f9e034fa7728ec6024.fitBounds(
                 [[59.9316667, 30.3363889], [59.9316667, 30.3363889]],
                 {}
             );
         
     
-        function geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_styler(feature) {
+        function geo_json_74f5ccb4a94467f9080551f3340e7de4_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.5, &quot;weight&quot;: 2};
             }
         }
-        function geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_highlighter(feature) {
+        function geo_json_74f5ccb4a94467f9080551f3340e7de4_highlighter(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.75};
             }
         }
-        function geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_pointToLayer(feature, latlng) {
+        function geo_json_74f5ccb4a94467f9080551f3340e7de4_pointToLayer(feature, latlng) {
             var opts = {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;#3388ff&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;#3388ff&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 2, &quot;stroke&quot;: true, &quot;weight&quot;: 3};
             
-            let style = geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_styler(feature)
+            let style = geo_json_74f5ccb4a94467f9080551f3340e7de4_styler(feature)
             Object.assign(opts, style)
             
             return new L.CircleMarker(latlng, opts)
         }
 
-        function geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_onEachFeature(feature, layer) {
+        function geo_json_74f5ccb4a94467f9080551f3340e7de4_onEachFeature(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        geo_json_62f3f8d65b8afbf414ef0ca16b5aad49.resetStyle(e.target);
+                        geo_json_74f5ccb4a94467f9080551f3340e7de4.resetStyle(e.target);
                     }
                 },
                 mouseover: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        const highlightStyle = geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_highlighter(e.target.feature)
+                        const highlightStyle = geo_json_74f5ccb4a94467f9080551f3340e7de4_highlighter(e.target.feature)
                         e.target.setStyle(highlightStyle);
                     }
                 },
             });
         };
-        var geo_json_62f3f8d65b8afbf414ef0ca16b5aad49 = L.geoJson(null, {
-                onEachFeature: geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_onEachFeature,
+        var geo_json_74f5ccb4a94467f9080551f3340e7de4 = L.geoJson(null, {
+                onEachFeature: geo_json_74f5ccb4a94467f9080551f3340e7de4_onEachFeature,
             
-                style: geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_styler,
-                pointToLayer: geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_pointToLayer
+                style: geo_json_74f5ccb4a94467f9080551f3340e7de4_styler,
+                pointToLayer: geo_json_74f5ccb4a94467f9080551f3340e7de4_pointToLayer
         });
 
-        function geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_add (data) {
-            geo_json_62f3f8d65b8afbf414ef0ca16b5aad49
+        function geo_json_74f5ccb4a94467f9080551f3340e7de4_add (data) {
+            geo_json_74f5ccb4a94467f9080551f3340e7de4
                 .addData(data)
-                .addTo(map_407b5e1b272d1e7336aada9c016ea63a);
+                .addTo(map_78a236a9539520f9e034fa7728ec6024);
         }
-            geo_json_62f3f8d65b8afbf414ef0ca16b5aad49_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_74f5ccb4a94467f9080551f3340e7de4_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-    geo_json_62f3f8d65b8afbf414ef0ca16b5aad49.bindTooltip(
+    geo_json_74f5ccb4a94467f9080551f3340e7de4.bindTooltip(
     function(layer){
     let div = L.DomUtil.create(&#x27;div&#x27;);
     
@@ -670,11 +674,11 @@ document.write(`
 &lt;/script&gt;
 &lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div></div>
 </div>
-<p>Вуаля! Мы увидели на интерактивной карте точку, которую создали! Она не улетела в ни в Гвинейский залив, ни в Японской море, ни в Антарктику благодаря тому, что мы не забли про проекцию, и оказалась там, где и должна быть - в Санкт-Петербурге &lt;3</p>
+<p>Вуаля! Мы увидели на интерактивной карте точку, которую создали! Мы не забыли про систему координат, поэтому она оказалась там, где и должна быть - в Санкт-Петербурге &lt;3</p>
 </div>
 <div class="section" id="id4">
 <h3>Сохраненяем результат<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
-<p>Теперь остается сохранить данный в любой из известных нам форматов</p>
+<p>Теперь остается сохранить полученные данные в любой из известных нам форматов с помощью метода to_file</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s1">&#39;data/dataframe.gpkg&#39;</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;GPKG&#39;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> 
