@@ -63,7 +63,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/1_data';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="GEO-PY in Urban Analytics" href="../intro.html" />
+    <link rel="prev" title="0. Начало работы" href="0_start.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -155,6 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_start.html">0. Начало работы</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">I. Данные</a></li>
 </ul>
 
@@ -338,7 +339,7 @@ document.write(`
                   
   <div class="tex2jax_ignore mathjax_ignore section" id="i">
 <h1>I. Данные<a class="headerlink" href="#i" title="Permalink to this heading">#</a></h1>
-<p>Для аналитики нужны данные, без них точно ничего не получится:)</p>
+<p>Для аналитики в первую очередь нужны данные:)</p>
 <p>В этом разделе мы посмотрим как:</p>
 <ul class="simple">
 <li><p>создать набор данных на основе координат</p></li>
@@ -356,10 +357,15 @@ document.write(`
 </div>
 </div>
 </div>
-<p>и коротко расскажем о них:</p>
-<p><strong>Pandas</strong> пригодится для обработки и анализа струкутрированных данных (простыми словами - для работы с табличками)</p>
-<p><strong>Geopandas</strong> расширяет функциональность Pandas, чтобы мы могли работать с геопространственными данными &lt;3</p>
-<p><strong>OSMnx</strong> помогает выгружать данные из OpenStreetMap</p>
+<p style="color:#26528C; font-style:italic"> 
+<strong>Pandas</strong> пригодится для обработки и анализа струкутрированных данных (табличек)
+</p>
+<p style="color:#26528C; font-style:italic;"> 
+<strong>Geopandas</strong> расширяет функциональность Pandas для работы с геопространственными данными 
+</p>
+<p style="color:#26528C; font-style:italic;"> 
+<strong>OSMnx</strong> помогает выгружать данные из OpenStreetMap
+</p>
 </div>
 <div class="section" id="id2">
 <h2>1.1 Создаем<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
@@ -368,7 +374,7 @@ document.write(`
 <div class="section" id="id3">
 <h3>Пространственные данные из координат<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <p>Долготу и широту присваиваем переменным lat и lon, соответственно. Также перемнной point присавиваем словарь, в который записываем координты и название объекта</p>
-<p><strong>Словарь</strong> — это тип данных, представляющий собой коллекцию пар «ключ-значение»</p>
+<p style="color:#26528C; font-style:italic"><strong>Словарь</strong> — это тип данных, представляющий собой коллекцию пар «ключ-значение» </p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span>  <span class="mf">59.9316667</span>
@@ -380,7 +386,7 @@ document.write(`
 </div>
 </div>
 <p>На основе словаря (point) создаем DataFrame (point_df) и смотрим на получившийся набор данных, чтобы убедиться, что с ним все хорошо</p>
-<p><storng>DataFrame</strong> - это структура данных в библиотеке Pandas, которая представляет собой двумерный массив с индексами для строк и столбцов (aka табличка)</p>
+<p style="color:#26528C; font-style:italic"><strong>DataFrame</strong> - это структура данных в библиотеке Pandas, которая представляет собой двумерный массив с индексами для строк и столбцов (aka табличка)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -426,7 +432,7 @@ document.write(`
 </div>
 <p>На основе DataFrame (point_df) создаем набор пространственных данных - GeoDataFrame с помощью библиотеки geopandas. Это очень просто! Указываем наш массив данных (point_df), определяем геомтерию на основе координат и не забываем про систему коордиант!</p>
 <p>Мы используем CRS 4326 - WGS84 - географическую систему координат, так как у нас широта и долгота в градусах.</p>
-<p><storng>GeoDataFrame</strong> - это расширенный DataFrame, у которого есть поле с геометрией объекта</p>
+<p style="color:#26528C; font-style:italic"><strong>GeoDataFrame</strong> - это расширенный DataFrame, у которого есть поле с геометрией объекта </p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">point_df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">],</span> <span class="n">point_df</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]),</span> <span class="n">crs</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
@@ -495,7 +501,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p><em>Загадочная запись во второй строке внутри print() – форматирование строки с помощью оператора %. В ситуации, когда нужно подставить в строку значения из переменных - очень удобно</em></p>
+<p style="color:#26528C; font-style:italic">Загадочная запись во второй строке внутри print() – форматирование строки с помощью оператора %. В ситуации, когда нужно подставить в строку значения из переменных - очень удобно</p>
 <p>Дествительно, в переменных содержатся данные разного типа! А point_gdf - GeoDataFrame. Значит, мы успешно создали набор пространственных данных и можем ~~собой гордиться~~ теперь отобразить данные на карте.</p>
 <p>Для этого воспользуемся методом explore, который позволит нам с легкостью визуализировать данные на интерактивной карте. Он использует библиотеки folium, mapclassify и maplotlib (важно, чтобы они были установлены), импортировать в проект их не нужно</p>
 <div class="cell docutils container">
@@ -532,7 +538,7 @@ document.write(`
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_78a236a9539520f9e034fa7728ec6024 {
+                #map_7b3bf721684bef0a14cb569c219775be {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -562,14 +568,14 @@ document.write(`
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_78a236a9539520f9e034fa7728ec6024&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_7b3bf721684bef0a14cb569c219775be&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_78a236a9539520f9e034fa7728ec6024 = L.map(
-                &quot;map_78a236a9539520f9e034fa7728ec6024&quot;,
+            var map_7b3bf721684bef0a14cb569c219775be = L.map(
+                &quot;map_7b3bf721684bef0a14cb569c219775be&quot;,
                 {
                     center: [59.9316667, 30.3363889],
                     crs: L.CRS.EPSG3857,
@@ -578,77 +584,77 @@ document.write(`
                     preferCanvas: false,
                 }
             );
-            L.control.scale().addTo(map_78a236a9539520f9e034fa7728ec6024);
+            L.control.scale().addTo(map_7b3bf721684bef0a14cb569c219775be);
 
             
 
         
     
-            var tile_layer_503d9df74efd9ce46a531eb320a92a4b = L.tileLayer(
+            var tile_layer_c8da08af5a4f4157acce57969099902f = L.tileLayer(
                 &quot;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {&quot;attribution&quot;: &quot;Data by \u0026copy; \u003ca target=\&quot;_blank\&quot; href=\&quot;http://openstreetmap.org\&quot;\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\&quot;_blank\&quot; href=\&quot;http://www.openstreetmap.org/copyright\&quot;\u003eODbL\u003c/a\u003e.&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 18, &quot;maxZoom&quot;: 18, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
-            ).addTo(map_78a236a9539520f9e034fa7728ec6024);
+            ).addTo(map_7b3bf721684bef0a14cb569c219775be);
         
     
-            map_78a236a9539520f9e034fa7728ec6024.fitBounds(
+            map_7b3bf721684bef0a14cb569c219775be.fitBounds(
                 [[59.9316667, 30.3363889], [59.9316667, 30.3363889]],
                 {}
             );
         
     
-        function geo_json_74f5ccb4a94467f9080551f3340e7de4_styler(feature) {
+        function geo_json_574f1c013cf4d9408eae6fd7cc0405ca_styler(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.5, &quot;weight&quot;: 2};
             }
         }
-        function geo_json_74f5ccb4a94467f9080551f3340e7de4_highlighter(feature) {
+        function geo_json_574f1c013cf4d9408eae6fd7cc0405ca_highlighter(feature) {
             switch(feature.id) {
                 default:
                     return {&quot;fillOpacity&quot;: 0.75};
             }
         }
-        function geo_json_74f5ccb4a94467f9080551f3340e7de4_pointToLayer(feature, latlng) {
+        function geo_json_574f1c013cf4d9408eae6fd7cc0405ca_pointToLayer(feature, latlng) {
             var opts = {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;#3388ff&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;#3388ff&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 2, &quot;stroke&quot;: true, &quot;weight&quot;: 3};
             
-            let style = geo_json_74f5ccb4a94467f9080551f3340e7de4_styler(feature)
+            let style = geo_json_574f1c013cf4d9408eae6fd7cc0405ca_styler(feature)
             Object.assign(opts, style)
             
             return new L.CircleMarker(latlng, opts)
         }
 
-        function geo_json_74f5ccb4a94467f9080551f3340e7de4_onEachFeature(feature, layer) {
+        function geo_json_574f1c013cf4d9408eae6fd7cc0405ca_onEachFeature(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        geo_json_74f5ccb4a94467f9080551f3340e7de4.resetStyle(e.target);
+                        geo_json_574f1c013cf4d9408eae6fd7cc0405ca.resetStyle(e.target);
                     }
                 },
                 mouseover: function(e) {
                     if(typeof e.target.setStyle === &quot;function&quot;){
-                        const highlightStyle = geo_json_74f5ccb4a94467f9080551f3340e7de4_highlighter(e.target.feature)
+                        const highlightStyle = geo_json_574f1c013cf4d9408eae6fd7cc0405ca_highlighter(e.target.feature)
                         e.target.setStyle(highlightStyle);
                     }
                 },
             });
         };
-        var geo_json_74f5ccb4a94467f9080551f3340e7de4 = L.geoJson(null, {
-                onEachFeature: geo_json_74f5ccb4a94467f9080551f3340e7de4_onEachFeature,
+        var geo_json_574f1c013cf4d9408eae6fd7cc0405ca = L.geoJson(null, {
+                onEachFeature: geo_json_574f1c013cf4d9408eae6fd7cc0405ca_onEachFeature,
             
-                style: geo_json_74f5ccb4a94467f9080551f3340e7de4_styler,
-                pointToLayer: geo_json_74f5ccb4a94467f9080551f3340e7de4_pointToLayer
+                style: geo_json_574f1c013cf4d9408eae6fd7cc0405ca_styler,
+                pointToLayer: geo_json_574f1c013cf4d9408eae6fd7cc0405ca_pointToLayer
         });
 
-        function geo_json_74f5ccb4a94467f9080551f3340e7de4_add (data) {
-            geo_json_74f5ccb4a94467f9080551f3340e7de4
+        function geo_json_574f1c013cf4d9408eae6fd7cc0405ca_add (data) {
+            geo_json_574f1c013cf4d9408eae6fd7cc0405ca
                 .addData(data)
-                .addTo(map_78a236a9539520f9e034fa7728ec6024);
+                .addTo(map_7b3bf721684bef0a14cb569c219775be);
         }
-            geo_json_74f5ccb4a94467f9080551f3340e7de4_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
+            geo_json_574f1c013cf4d9408eae6fd7cc0405ca_add({&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;features&quot;: [{&quot;bbox&quot;: [30.3363889, 59.9316667, 30.3363889, 59.9316667], &quot;geometry&quot;: {&quot;coordinates&quot;: [30.3363889, 59.9316667], &quot;type&quot;: &quot;Point&quot;}, &quot;id&quot;: &quot;1&quot;, &quot;properties&quot;: {&quot;Latitude&quot;: 59.9316667, &quot;Longitude&quot;: 30.3363889, &quot;name&quot;: &quot;Alexandrinsky theater&quot;}, &quot;type&quot;: &quot;Feature&quot;}], &quot;type&quot;: &quot;FeatureCollection&quot;});
 
         
     
-    geo_json_74f5ccb4a94467f9080551f3340e7de4.bindTooltip(
+    geo_json_574f1c013cf4d9408eae6fd7cc0405ca.bindTooltip(
     function(layer){
     let div = L.DomUtil.create(&#x27;div&#x27;);
     
@@ -728,12 +734,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../intro.html"
+       href="0_start.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GEO-PY in Urban Analytics</p>
+        <p class="prev-next-title">0. Начало работы</p>
       </div>
     </a>
 </div></div>
