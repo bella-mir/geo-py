@@ -5,6 +5,7 @@
 format: jb-book
 root: intro
 chapters:
+    - file: chapters/0_start
     - file: chapters/1_data
 
 # - file: notebooks
