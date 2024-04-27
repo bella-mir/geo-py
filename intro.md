@@ -10,7 +10,7 @@
 
 Основы Python мы разбирать не будем, но есть множество открытых курсов, которые помогут получить базовые знания о нем
 
-Разделы будут дополняться постепенно. К каждому из них будет доступно видео на Youtube канале<a href="https://www.youtube.com/channel/UC99_v_T0CTEsYiY2O6YsvOA" target="_blank"> Основы программирования для географов</a>
+Разделы будут дополняться постепенно. К каждому из них будет доступно видео на Youtube канале<a href="https://www.youtube.com/playlist?list=PLbozJClxFQYU3-iY5gA8IShshhFh1hfE5" target="_blank"> Основы программирования для географов</a>
 
 #### Почему Python?
 
@@ -26,15 +26,16 @@ _...совсем скоро разделов здесь будет больше 
 
 #### Полезные ссылки:
 
-1. <a href="https://t.me/GIS_PEACE" target="_blank">GIS AND PEACE</a> - канал в телеграмме о ГИС и урбанистике (тут будут появляться обновления по этому курсу)
-2. <a href="https://www.youtube.com/channel/UC99_v_T0CTEsYiY2O6YsvOA" target="_blank">Основы программирования для географов</a> - канал на YouTube о разных возможностях использования программирования в географии
-3. <a href="https://stepik.org/course/58852/promo" target="_blank">"Поколение Python": курс для начинающих</a> - бесплатный курс на платформе Stepik для изучения основ программирования на Python
-4. <a href="https://github.com/bella-mir/geo-py" target="_blank">Репозиторий пособия</a> на GitHub
+1. <a href="https://www.youtube.com/playlist?list=PLbozJClxFQYU3-iY5gA8IShshhFh1hfE5" target="_blank">Geo-Py in Urban Analytics</a> - плейлист пособия на YouTube
+2. <a href="https://t.me/GIS_PEACE" target="_blank">GIS AND PEACE</a> - канал в телеграмме о ГИС и урбанистике (тут будут появляться обновления по этому курсу)
+3. <a href="https://www.youtube.com/channel/UC99_v_T0CTEsYiY2O6YsvOA" target="_blank">Основы программирования для географов</a> - канал на YouTube о разных возможностях использования программирования в географии
+4. <a href="https://stepik.org/course/58852/promo" target="_blank">"Поколение Python": курс для начинающих</a> - бесплатный курс на платформе Stepik для изучения основ программирования на Python
+5. <a href="https://github.com/bella-mir/geo-py" target="_blank">Репозиторий пособия</a> на GitHub
 
 #### Поддержка
 
 Этот проект - экcперимент :) Я его буду вести в режиме реального времени, и вы тоже можете на него повлиять. Ваши отзывы помогут мне двигаться дальше и выкладывать больше материалов, а конструктивная критика - становиться лучше
 
-Я очень ценю обратную связь и буду рада комментариям и предложениям, которые можно писать мне в <a href="https://t.me/belkamir" target="_blank">телеграмме</a>, оставлять под <a href="https://www.youtube.com/channel/UC99_v_T0CTEsYiY2O6YsvOA" target="_blank">видео</a> на YouTube или под постами телеграмм-канала <a href="https://t.me/GIS_PEACE" target="_blank">GIS AND PEACE</a>
+Я очень ценю обратную связь и буду рада комментариям и предложениям, которые можно писать мне в <a href="https://t.me/belkamir" target="_blank">телеграмме</a>, оставлять под <a href="https://www.youtube.com/playlist?list=PLbozJClxFQYU3-iY5gA8IShshhFh1hfE5" target="_blank">видео</a> на YouTube или под постами телеграмм-канала <a href="https://t.me/GIS_PEACE" target="_blank">GIS AND PEACE</a>
 
 Обязательно расскажите мне о темах, которые вы хотели бы здесь увидеть
