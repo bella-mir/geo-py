@@ -1,0 +1,48 @@
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/Users/belka/Library/Python/3.10/lib/python/site-packages/nbclient/client.py", line 1265, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/belka/Library/Python/3.10/lib/python/site-packages/jupyter_core/utils/__init__.py", line 166, in wrapped
+    return loop.run_until_complete(inner)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "/Users/belka/Library/Python/3.10/lib/python/site-packages/nbclient/client.py", line 703, in async_execute
+    await self.async_execute_cell(
+  File "/Users/belka/Library/Python/3.10/lib/python/site-packages/nbclient/client.py", line 1021, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/belka/Library/Python/3.10/lib/python/site-packages/nbclient/client.py", line 915, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+admin_okrug.set_crs(data_crs)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[16], line 1[0m
+[0;32m----> 1[0m [43madmin_okrug[49m[38;5;241;43m.[39;49m[43mset_crs[49m[43m([49m[43mdata_crs[49m[43m)[49m
+
+File [0;32m/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/geopandas/geodataframe.py:1339[0m, in [0;36mGeoDataFrame.set_crs[0;34m(self, crs, epsg, inplace, allow_override)[0m
+[1;32m   1337[0m [38;5;28;01melse[39;00m:
+[1;32m   1338[0m     df [38;5;241m=[39m [38;5;28mself[39m
+[0;32m-> 1339[0m df[38;5;241m.[39mgeometry [38;5;241m=[39m [43mdf[49m[38;5;241;43m.[39;49m[43mgeometry[49m[38;5;241;43m.[39;49m[43mset_crs[49m[43m([49m
+[1;32m   1340[0m [43m    [49m[43mcrs[49m[38;5;241;43m=[39;49m[43mcrs[49m[43m,[49m[43m [49m[43mepsg[49m[38;5;241;43m=[39;49m[43mepsg[49m[43m,[49m[43m [49m[43mallow_override[49m[38;5;241;43m=[39;49m[43mallow_override[49m[43m,[49m[43m [49m[43minplace[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m
+[1;32m   1341[0m [43m[49m[43m)[49m
+[1;32m   1342[0m [38;5;28;01mreturn[39;00m df
+
+File [0;32m/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/geopandas/geoseries.py:1044[0m, in [0;36mGeoSeries.set_crs[0;34m(self, crs, epsg, inplace, allow_override)[0m
+[1;32m   1041[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mMust pass either crs or epsg.[39m[38;5;124m"[39m)
+[1;32m   1043[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m allow_override [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mcrs [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m[38;5;241m.[39mcrs [38;5;241m==[39m crs:
+[0;32m-> 1044[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[1;32m   1045[0m         [38;5;124m"[39m[38;5;124mThe GeoSeries already has a CRS which is not equal to the passed [39m[38;5;124m"[39m
+[1;32m   1046[0m         [38;5;124m"[39m[38;5;124mCRS. Specify [39m[38;5;124m'[39m[38;5;124mallow_override=True[39m[38;5;124m'[39m[38;5;124m to allow replacing the existing [39m[38;5;124m"[39m
+[1;32m   1047[0m         [38;5;124m"[39m[38;5;124mCRS without doing any transformation. If you actually want to [39m[38;5;124m"[39m
+[1;32m   1048[0m         [38;5;124m"[39m[38;5;124mtransform the geometries, use [39m[38;5;124m'[39m[38;5;124mGeoSeries.to_crs[39m[38;5;124m'[39m[38;5;124m instead.[39m[38;5;124m"[39m
+[1;32m   1049[0m     )
+[1;32m   1050[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m inplace:
+[1;32m   1051[0m     result [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mcopy()
+
+[0;31mValueError[0m: The GeoSeries already has a CRS which is not equal to the passed CRS. Specify 'allow_override=True' to allow replacing the existing CRS without doing any transformation. If you actually want to transform the geometries, use 'GeoSeries.to_crs' instead.
+ValueError: The GeoSeries already has a CRS which is not equal to the passed CRS. Specify 'allow_override=True' to allow replacing the existing CRS without doing any transformation. If you actually want to transform the geometries, use 'GeoSeries.to_crs' instead.
+
