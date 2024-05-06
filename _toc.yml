@@ -8,6 +8,7 @@ chapters:
     - file: chapters/0_start
     - file: chapters/1_data
     - file: chapters/2_crs
+    - file: chapters/3_agg
 
 # - file: notebooks
 # - file: markdown-notebooks
