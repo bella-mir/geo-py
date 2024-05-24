@@ -157,6 +157,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapters/0_start.html">0. Начало работы</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapters/1_data.html">I. Данные</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapters/2_crs.html">II. Проекции и системы координат</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/3_agg.html">III. Агрегирование данных</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapters/4_classes.html">IV. Методы классификации</a></li>
 </ul>
 
     </div>
@@ -318,7 +320,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Пропажа и поиски объектов в пространстве</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Пропажа и поиски объектов в пространстве</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Функция построения гистограммы</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Функция для создания карты</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">Перепроецирование VS установка системы координат</a></li>
 </ul>
 
@@ -334,6 +340,73 @@ document.write(`
                   
   <div class="section" id="id1">
 <h1>Пропажа и поиски объектов в пространстве<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<div class="section" id="id2">
+<h2>Функция построения гистограммы<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>на вход принимает данные, интересующий показатель, кол-во интервалов и алгоритм классификации</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_hist_with_intervals</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">scheme</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">classification_schemes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;equalInterval&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">EqualInterval</span><span class="p">,</span>
+        <span class="s2">&quot;naturalBreaks&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">NaturalBreaks</span><span class="p">,</span>
+        <span class="s2">&quot;quantiles&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">Quantiles</span><span class="p">,</span>
+        <span class="s2">&quot;stdMean&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">StdMean</span><span class="p">,</span>
+        <span class="s2">&quot;percentiles&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">Percentiles</span><span class="p">,</span>
+        <span class="s2">&quot;userDefined&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">UserDefined</span><span class="p">,</span>
+        <span class="s2">&quot;boxPlot&quot;</span><span class="p">:</span> <span class="n">mc</span><span class="o">.</span><span class="n">BoxPlot</span>
+    <span class="p">}</span>
+    
+    <span class="n">classification_class</span> <span class="o">=</span> <span class="n">classification_schemes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">classification_class</span><span class="p">:</span>
+        <span class="c1"># Проверяем, нужно ли учитывать параметр k для данной схемы</span>
+        <span class="k">if</span> <span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;stdMean&quot;</span><span class="p">,</span> <span class="s2">&quot;percentiles&quot;</span><span class="p">,</span> <span class="s2">&quot;boxPlot&quot;</span><span class="p">]:</span>
+            <span class="n">classifier</span> <span class="o">=</span> <span class="n">classification_class</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">classifier</span> <span class="o">=</span> <span class="n">classification_class</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+        
+        <span class="c1"># Строим гистограмму</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        
+        <span class="c1"># Добавляем вертикальные линии для границ интервалов</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">classifier</span><span class="o">.</span><span class="n">bins</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Добавляем подписи и заголовок</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Histogram with Interval Boundaries&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Схема классификации &#39;</span><span class="si">{</span><span class="n">scheme</span><span class="si">}</span><span class="s2">&#39; не найдена.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>Функция для создания карты<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<p>на вход принимает данные, кол-во интервалов и метод классификации</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_classified_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">scheme</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;BuPu&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Population Density, ppl/sq.km&#39;</span><span class="p">):</span>
+    <span class="c1"># Строим график</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;0.8&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="c1"># Добавляем название</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="c1"># Скрываем координатные оси</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Получаем объект легенды</span>
+    <span class="n">leg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span>
+
+    <span class="c1"># Перемещаем легенду за пределы графика справа</span>
+    <span class="n">leg</span><span class="o">.</span><span class="n">set_bbox_to_anchor</span><span class="p">((</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Если не разобраться с тем, как устроены системы координат, то ваши данные могут загадочно перемещаться в пространстве. Например:</p>
 <ol class="arabic simple">
 <li><p>набор данных внезапно оказывается в Гвинейском заливе</p></li>
@@ -341,6 +414,7 @@ document.write(`
 </ol>
 <p>Это часто происходит, когда путают перепроецирование с установкой системы координат</p>
 <p>Задача этого блока сделать так, чтобы как можно меньшее количество их вас в дальнейшнем сталкивались с такими проблемами :)</p>
+</div>
 </div>
 <div class="section" id="vs">
 <h1>Перепроецирование VS установка системы координат<a class="headerlink" href="#vs" title="Permalink to this heading">#</a></h1>
@@ -357,7 +431,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">admin_okrug</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">data_crs</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;admin_okrug&#39; is not defined
@@ -373,6 +447,451 @@ document.write(`
 </div>
 </div>
 <p>Пользоваться set_crs можно только в том случае, если проекция у данных не установлена или установлена неверно</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Set up GraphHopper API endpoint</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://graphhopper.com/api/1/route&quot;</span>
+
+<span class="c1"># Coordinates for Vienna and Berlin</span>
+<span class="n">vienna_coords</span> <span class="o">=</span> <span class="s2">&quot;48.206389,16.384722&quot;</span>  <span class="c1"># Vienna</span>
+<span class="n">berlin_coords</span> <span class="o">=</span> <span class="s2">&quot;52.5251, 13.3694&quot;</span> 
+
+
+
+<span class="c1"># Parameters for the request</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;f879a2e8-af71-4e73-956e-6f520a03722a&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">vienna_coords</span><span class="p">,</span> <span class="n">berlin_coords</span><span class="p">],</span>
+    <span class="s2">&quot;profile&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+    <span class="c1"># &quot;locale&quot;: &quot;en&quot;,  # Language for response</span>
+<span class="p">}</span>
+
+<span class="c1"># Send the request</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Parse the response</span>
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="n">route_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="c1"># Extract and process the route data as needed</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">route_data</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error: 400
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">route_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;hints&#39;: {&#39;visited_nodes.sum&#39;: 2702, &#39;visited_nodes.average&#39;: 2702.0},
+ &#39;info&#39;: {&#39;copyrights&#39;: [&#39;GraphHopper&#39;, &#39;OpenStreetMap contributors&#39;],
+  &#39;took&#39;: 16,
+  &#39;road_data_time_stamp&#39;: &#39;2024-05-16T15:00:00Z&#39;},
+ &#39;paths&#39;: [{&#39;distance&#39;: 682000.364,
+   &#39;weight&#39;: 34312.895034,
+   &#39;time&#39;: 24028509,
+   &#39;transfers&#39;: 0,
+   &#39;points_encoded&#39;: True,
+   &#39;points_encoded_multiplier&#39;: 100000.0,
+   &#39;bbox&#39;: [13.385715, 48.191335, 16.690781, 52.520001],
+   &#39;points&#39;: &#39;}qfeHs~|bBLa@B?H?RHLJVLFFm@~BxBr@XiBXaAj@oAl@g@~@cBJk@l@sANQh@}@h@iAxBmGPo@`FfFj@eB`C}GNWrBiGH_@UQiBgBgCuDwDyFcAoBKWE[J{A?YGi@ASSI{F_El@uCl@}Bp@cBjBaDz@kAp@w@pAeBjAyAz@u@x@w@lAgBNYfA_BC_@q@_A_@a@_B{BVkEZoEPeAHYL[lAcCgCuCoCyCOUlAwBt@mBX{@\\{A^_Dp@sGr@}Fj@qEd@gD^_BRq@b@eAd@{@l@_Af@i@z@s@pBqA`@c@dDeC|AoA~EmEpB{B^g@r@eAh@s@nA}Ad@s@x@yAzAyCXMZ]RS`@WZOTWPULYr@}C`@uALYz@aBz@_BZYJIJCZATDJFHFRXLb@D`@@NAVARMd@ENKPKJKFUFU?UE}AcAeEgH}FqJaAuAQ_@iFiIwZsg@mIwNk@y@cE_HuBqDaBkCw@sAo@_A{So]aCaEg@s@mBaDU[Wa@eGeKcE}GSSaBeCy@aAw@y@o@i@m@_@{@c@m@Sk@My@Ms@Ek@AgCBkCDo@AmC?wKEq@Cq@Ek@Mk@Mq@WmBw@cG}BuC}@kBq@i@Uy@e@w@i@{@y@iEeFu@q@sA}@aAi@yAk@yHmCiFcBeHuBgAa@_Ag@yAy@w@g@e@_@eA}@}@}@qA{AyDgFk@o@g@g@o@g@_Ak@aXoN_BaAwByAqDuCkBcBcCmCeCyC}AuBwBsCwIgLCIe@o@gDaE{DcEoAkAoC}BgHwFuCaC{AeAkAu@mBeA{BmAwCqAqCkAoBq@iBi@yA_@mAY_BYgDe@sAOw@EgAAg@De@DcEx@aALk@Bc@?e@Ag@Ia@IkAa@uMqFm@[k@_@e@_@a@c@m@u@Ya@g@{@w@gBYy@Su@Oq@Ou@Ko@S}AQiBQoBMkBI{BEuBCiD@wCFmCJmCNgCX{C^wChAuGbAcGb@qENsBNiCHgCDkC?gBAqBE{BI{BKoBSoC]yCc@}Ce@oCu@gD[mA_@mAe@{Ag@uAk@wAo@yAe@}@wAwBk@u@o@q@s@o@o@i@eBgA{@_@aA]eAWwEeAmG{AoBi@mCw@_Bm@kFaCyC_Ba\\iQaCqAuDqB{B_AwBs@sCo@sAU_BOqAIoACqAAyAD}AH{ANgAPcARsA\\qAb@uBx@iAh@uAt@oSjM}BpAaChAaA`@{Ad@_B^wAVyAPcAHwAFwABiBCiBKmBS{AWgAWoCw@oMcFiDoAij@iTkCy@_Ck@sB]}BWmBMeCIeB?uCHsDTkCJcCHuCBuDAgEO{CQmFi@kD_@uAIsACuB?uAD{@H}C^u@LsA^qA`@eBl@}@^cAh@qBjAeBpAwBhByAvAiApAiBdCkBxCkVtd@}JpR{NrXcJzPw@|Ao@xA{@xBg@|Aw@tC}@|De@nCk@vEUvBe@xC_AvHOfA_@hBQp@a@tAe@hA[l@i@~@e@n@WZ_@^e@`@}@l@cAf@{@Xc@HcAL_@Bw@?s@EoC[qCg@{Eo@eCSgAGmAGmFEuGDaE@kCCiDMqCUkAOqAUoAWqAYmCu@oAa@{Ak@yB_Aw@_@sH_EiAg@}DaBiEuAcAY{Cs@cFgA}FkAsEy@{Du@mHaBcGoAuVuEiFkAeCw@i@U_Ae@cBeAmAcAoAkAo@s@cAuAg@s@iAmB[m@a@}@gDgIuAeDuI{RiBgEkDiJcCgGy@kBo@yAaAoBuB}DiB{CoDqF}@{Aw@yAy@eBm@wA}AgEm@qBe@_B_@_BuAuGw@eEeAcFgAgFeDyNo@eCwA_GkBgHu@oCy@oCgBqFqAoDaAeCcAaC_BeDaBuCiCaEyAuBmCkDi@q@aCiCgCeCyAoA{AkA}@q@}B}AiAq@yGwDgTyLiN}HeWwN}^cTcT_M{v@_d@aB}@iB_A_A_@gA_@kA]_ASiAQoAO_AGy@CeA?iA@iAFeBNaAPuBd@aCv@_JjDgJbDeGpBuC|@{DdAaDp@cEn@gEb@qAHaCJsBDyB@aCA{AEcCOgBMiCYkBWw@MeDo@uA]_Co@aEsAwDuA}B}@sDaBuEwB}CaBwCaB}DaCwCkB_C_BuFaE{D_D{AqAmC_C{BwB}F}FyCaDmD}DkD_E}D_FiDkEmDyEcE_GmE{GqAqB_DiF_DkFmBkDyDiHeBeDaBeDqCaGqBoEm@wAiA}Ck@gBc@}Ai@oBg@sBe@{B]cBW_B[sB]qCk@wF_@oEO{A_@{CSqAYyA]cBa@iBc@_Bi@eBk@_By@qBo@wAq@uAy@wAy@oAm@_Ay@cAy@_Aw@y@q@m@qB_B_Am@}@g@q@_@wKwEyDeB}DkBcFgCcE{BuDuB{KwGmBqAsCsBmEoDgD_DaDcDeCqCuCoDcCgDyCmEcC_EaBuCsAiCqAkC}@kBwAaDoMqZcAuBq@sAs@oAw@oA}A}Bq@}@sAaBuAwAi@i@kB_B{@q@_Aq@y@g@gCwAwAo@iAc@kAc@qCw@yA[qCe@{AOcBKwAEaAAqA@}DJ{DL}i@hBqB?kBEyBIgCOyBSuBYyBc@wBg@sBk@wBs@iBs@g`A_a@iBq@qBo@wAa@wA]uBa@gBWeCYqAKmAG}CIaB?sBBiADyBLuALyAPkAPqATwAXkBd@_Bf@kA^}ClAoAj@kAl@kAn@qAt@gAt@aCbB_ClBoWfU{H|GoA~@eAr@q@`@eCfAiBr@aAXkAZgATuBZaAHiBJeBBmBCmBKoAQgAQqAYgAYmA_@kAe@kAg@y@c@kAq@iJiGiDkBoBaA{CmAsAe@eA[gCo@aHwAeCo@q@UmBq@kAe@iCmAgAm@wA{@_CaBuAgAcA}@iBeB_BeBaBoBcByB}A_C{AiCq@kAo@qAo@sAkBiEe@kAm@cBu@yBk@iBaAsD]sAe@uBo@wC_@sBu@{Eg@aE{OkvAu@gGa@kD[}Bq@sEs@gEa@yBu@oDi@yBc@aBg@cBeAaDy@{BeAgCw@eB}A{Cs@qAq@gAs@gAuAkBmA}AeCqCmAiAiAaAkCsBaC{AkCyAa@QwAi@mAa@wCy@y@Sw@MgBW}AQqBMiDG_B@oAF_BJ{ANgHbAs@H}@HqCPkADiB@}A?_BCiBI{BQmBSkDk@kBa@kCq@aBi@iAa@mBw@}@a@oDkBsD_CoMeJmDsC{YeTqBwAeBkAgDuB_E_CeEyBeEoBaCeAuEiBsE_BaFyAaBc@wCs@wB_@_C[}@KyAKgCIgAAyA?}CJgAFgCVoBX}Bd@_ATqCx@oBr@eCfAiCrAoBlAkBrAiAz@}BnBaB`Bw@z@}@dAsBfCgAzA}AzBmUf]}AvBo@z@eAlAm@p@gAbAu@n@yAhAiFhDcBjAcBxA}BzBg@j@_BrBoAhBoAvB_AjBuChGaZlq@o@vAwArCw@vAmAnB{@lAsAbBgBjBmBfB}@t@cAr@y@f@{@f@oAn@aAb@qAb@eA\\aB^gB\\cBRqAHiAD{EByPRoBDoCNu@HkBXw@NqBh@{Ah@s@XqAl@gAl@gAn@gAv@sFfEaAp@_B`Ao@\\gBx@kAb@}@XiBd@eB\\cBRy@FyAH{@@eB?}BKs@GcCa@iDy@iBm@wB}@aEeBsCaA_Ba@sAYyGeAq@I{@Cc@@mCPkAB_@?_AIeDc@a@AsJyAut@yLoQuCaBSy@EiACmADcALq@L}@Tu@V{HvC{@X{A^{AXaCV]GUASEEKGGGCI?IBGHEJAT?HBLHNDH@PFrAAjECz@El@Il@Mt@On@Wr@sAfDm@|Ay@fCu@lCo@pCg@dCg@vCmAtJ[rB[hBa@lBc@hB]pAk@fBk@~Aq@`Bk@pAw@zAm@dA{@tA{@lA_AlAiAnAcA`A_At@}@r@aAn@y@h@w@^iAf@sAd@_ATuBb@sC\\kFx@iAR}UxDmLlBcG`AoC`@{APgANcAFuBJcB@aBA{AIaBKqBWkBYwA_@uBm@sBu@_C_AsB}@yZyLgTsIm@[eAo@]Yg@g@w@cAiAkBu@eAm@s@CGCS?MCMCKGKGGKCI?KBGHS?[GiAAYD{Cp@{TjEuUxEmGlAmDt@aSzD}AZu@Rq@T}Ah@aBx@}@f@o@f@sQ`OkAr@cA`@e@NkAVeE`@sDXeCVuBPkJ~@cBTk@N}Ap@aAn@i@^_@\\q@v@aA|AkA`CWp@EEGCG?GBGFCJAJ?LBJFHiC~F[p@g@~@e@p@gApA{@r@[ToB`Ay@XyA\\cALqIv@AKEKEEICG@GDEHCJ?JkVtBaX`CcARoBd@uAb@gF`DeE|EwF`KqGbJmIzHuWfQmKxEaEv@iBXiBTasArJak@bE}@AkCRIGGKIUGc@I|@ELEFGDcEZk@VsDZu\\nCgHt@kKjA}ItAyFbAwA\\ihAxQ{DbAiCr@eC`AqB`AmAx@mA|@kAdAgAhA{BpCaFtHgXtc@iBvCuAhB}@fAq@r@mC`C{@j@{@h@wAt@{B~@oIxC}DnA}m@vScAb@i@X_Aj@c@Z_At@y@`Ac@l@s@hA_@v@e@dAk@dB]pA[zA_@tB[xBkAjJm@|CmAdIa@fBY`A]lAa@hAgAhCiAxBcA`B{ApBkBnBkBbBwQ|MiCpB}BnB{BfCyAhBuAvBwAlCsAzCaJvTiDdIoD`JyAvD}FtNwJdVuGtP{ArDk`@zaAs@zAw@tA_AhA}@~@eA~@iAr@oAj@kA\\{AVuADeA@qCYkEk@mBSoCIqCBmBLmBTkBZiBd@sE`BsCxA}DvCkB|AsDhE{BzCcInLyAjByBbC{BtByBbBqCbBq@\\gBx@aA^uDfAeB`@ql@tLoATaEd@mA?sEF{CEy@EcCSuAQo@KuBc@_Bc@yAg@gAe@}As@{Ay@_BaA}AiAy@o@qCiC{AcBaC{CsAqBuAyBQ[cG_LgG_MoBwDgDgGeFyIqC}DkCqDmCeDiCyC{JqK_L}I}KyHiQmJiHgD_HsCmKmDyEoAyFmAmGgAgC]cIy@aEWiI_@kFOa\\EiCHeWjAsZ|BmTfCmjAjRmNnBoEf@wIz@oCRyG`@iDN}CHwIJoDA_ECkEKyESsDSeE[kI}@mPmCyImBqL{CeLsDcGiCeHqD{GaE{CsBmH_GeSiQmg@uc@sJ}JuF}GwHcLo@eAsGwLoAkCiCcGoD_KaE}LcEePsG{ZwBiJiAyEiBcHqAgEuAkEw@wBmAaDgBgEuBuEkA_C_CeEmBaDeBiCsBsCwBmC_CmCcFeFwBiBgCuBaGeEgAy@gFgD{DcCuC}AgFiC{B_AoAe@aEsAcEaAgHwA{Fw@gCS}G[oHAuEJ}d@lBaQj@qSx@yDJqHJqH@}NGiJ@qL^wAByJp@{x@pH}i@pF_OvAoSpB[IWSKKKOG[C]@_@@MH[FINQRER@HDPRJVLj@Fj@@n@_Ejs@kAlRe@nKM~FCnIFjHBhBHrDJhCNlD\\vHj@dKTjFL|EBpC@bEIhJIrCKtCOnCQbCWzC[zCg@fEQpAeAlGa@pBi@fCuIt^}Kfe@_CdMw@hEaAvF}@tF_DhUuBpSiAtMaHrgAi@~H[hD[|C_A|G_@rB_@jBcAtEiAlEuBpHcBpGw@dD_ArE{@nFw@nFa@zC]pDk@|GyAbTq@tIcArK[jCw@xFw@~E}ApIiBlIkDjNeCjJyGdXwB`JyAhHkAlGaA~Fm@tD}AdLy@|GiBhQcBbPkBxQeF`g@oBpR_AdJqBfQ{BhP}@pFiAlG_AzEcAzE}CtMi@rB_ClIwAvEeA`Ds@rB_AhCwD|JaBxD{AfDsBlEuCvFcEnH{BjDkCtDuBpC{ChDgBjBoDlDmDtCwAdA{AdAuChByAz@wAv@oEvBuHhDyFfCwEdCwBnAuBrAwAdAgDjCsChCiBnBqBzBaBpB{ArB}BhDoArBs@nAeCxEsAtCsA|CwC~Hw@~B{BvH}BtJcAnEgBzIsA|GwAvGw@fDmAtEaAbDgAdDuAxDsA`DsAvCwBhEaBpC_BfCkCvDyEnFcDbDcJvI}BbCqAxAcEpFeA`BmDbGcG|KiCtEuCpEqDlFuBtCaWlY{AfBqDrEiBpCcBpC{AlCuAnCyBlE{Wbj@uJlSuDtHiDnHmBnEiB|EgC|HcAvD_AvDiApFs@|Do@fEm@`Ec@`Ee@hFY`EUvDQjEK|DIbFSx^E|HIxMOtJQdG_@bIa@lGOhBq@rHe@hEuA`KuAdIs@rD_AjE_AxD_AnDcArDsAnEuDtLgB~FeOdf@}G`Uy@xCiBlHiAdFk@vCw@tEo@|DqA~J{@jIYxDy@`NYxGQ~FYvJaCry@s@hWS|IQpHOzHItDs@vc@U|MSlLMlHOnHKpDOhDa@fHu@bJy@jHc@dDg@vDm@tDiEpWsAjIsAtIqBfOsDjZ_Dp[wB|QyA~KcClOoCvNgCtKmA|EeA|D{BpHyB~G_DzIaAfCcCbGsIlRqIjQeQ~^sKtV_J`VmEnNgB`GeB~F}DlO{AhGuAfGaCbLqBpKcBrJeCdP{BxPw@xG_BrOa@pEwAtPsAnPqEfl@oA~OwAjO_AnI{@dHmAjIsAbIsApHkBzIkBbI}BbJeCrI_BbFkE~LcEhK}AzDoInSaChG_AhCcCjHcAdDaAhD_ApDu@zCs@vCmApFkAvFqAhGaBbIkB|IgBvHmDxLaGdOaGhLwDbGwBtCuBlCiN|PmAbBaEtGiBnDkBtDuAbDsAjD_HlRyKb[cD~IiDzIiFrLiLxTmCfFeCzEoH`PmDfI{Nb]eCpF_AnBk@hAeB|CoCpEoBtCqBlCoLfNcCfDuAvBkB|CcBbDkEjKmBrFcAjDcCdKyE|TgB~Go@vBo@nBeDtJkAlDaBnF{@~Cw@`DuArGy@hEe@rCa@rCy@hGo@nGi@dHS`DQhDMbDIdDQlLU|JSpGUlFu@xLg@bGm@fGw@xGsAnJW~AgAjG{@fEg@|BsAbGaJ|^aT~{@_FtS}K|f@uDfPcGlX_GrWw@pDqCzLkI~^m]b}AaGtWeEhRcBpI}@`Fg@fD_AzGeAvIaEn^iAtIeA|Gk@jDk@~CeB|IeA|EyAfGwElRqE|PmCxK{AlHkArG_@hCk@lEg@|Ec@~Ee@lHc@zJi@pMm@rLg@|Gg@tGcDd\\kKndAmJh_Ao@hGcAbMs@|Jy@pNa@hJWrGOjEO|EUbKYxKe@`OcA`U}@vOg@~G{@dM[nEm@tIiAbR]bIOzDO`FOpFQ`OAdF@bLBxGPxMt@z`@J`JFpH?bHE~GGjEIvD[fJSrESrD]tF[|EsA`ScAfQS|EQvFKnGG~G?fGBlIHzIBrJ@|IArAGfKMjFQfGg@xJ_@`HuD~l@eBjZy@hQm@zNYbI]rLi@jPSvF[tGUhD{@nJg@jE}@bGy@pEoAjGk@`Cm@~B}ApFwAhEwF`OmNr^qCjIkBhGkAtEaA`E[tAaAdFk@zC{@lFm@rEm@|EYpC_@dEo@hISbDo@`KSxDm@zIS|Ca@xHq@rKe@nHg@nGi@~Gi@dG_@hDa@pD_ApH_@pC_BdKmA`Hk@vCuBzJyAhGoCdKw@nCw@dCwAlEeB`FgAxCaFxLcDdIwL|Xy@pByFlM}M`\\wGtPyL|[kBjFmBrF{CpIeSzk@sI`WuDvK_CvGcE|Lu@fCm@vBqBlIsAfHw@rFo@vFa@jE]fFEz@QvDs@bTMfDOdCOzBQrBa@pD]lCYhBo@pD[|Ac@jBi@tBu@jCsAbEiAvCe@fAqArC_AfB_BlCkCnDeBrBiBlBkDlD{ArA_GlFiEbEoArA}BnCs@`Aq@`AaBnC_AnBo@vAeArCgAjDoDrMiAnDm@fBo@`BkAbCcAjB{@rAaArA_CpCsAjAqBzAwA|@yHdE{ClBaBnAyAtA{AdBuAfBuA|Bk@dAq@tAu@fB}@`Cm@rBk@pB_@dBWjAm@rDU~AUpBa@lEeAlMs@|IkCz\\{Dff@iAfMs@bHw@`H{@|G_AnGoAfIiArGoBtK_DbPeDpPi@xCqDrRyCbQwB`NmBjMcC|PkMx`A_AzGy@hGuArJk@pDm@pDk@fDm@|CcB|H{@pDy@zC_A`D_AzCcAvCcArCeAjCgC~FaC`FaAhBqBpDaBhCiAdBsCzD}CxDaExEoCfD}C`EwCtEgAlBuIdP{AnCsBfDgA`BcB`C{@fAoC~CuAtAmBfBoB`BoBxAkGjEsBzAuAjAeAbAgAnAkAvAwAvBqAxBoAbCmArCy@zBu@`Cm@vBu@`Dc@xB[hBU~AQ|A]bDc@lFMxCGpCClB@bC@fCLpEHrBLrB\\~DpB|Qd@hFNdBNdCJpBN|DHhCb@vTPrGJ|CP`D`@bHZ`Fh@rGf@dHfArP`@fINzDLlFFbDDdD@jH?tCCjDKpGQrGOvCY~F[dFi@rGq@xG{@bH{@xFgArGc@fCi@bCqAlGeBnHgBpH_I|ZgBdHgBrH_BnHgAlFcAlF_ArFy@tF{AnLe@nE_@dEs@dJc@|G[dGUdGc@hM[dNu@l^o@vZYhJMxCKrBYpD]xDWjCMfAu@rFe@vCW`B_AtEiBzHw@rCcAbDy@~Bu@rBkAtCw@jBgCfFuBrDgBpCmAdB}C|DcChC{BxB_CjBuAdAcC`BeBbAwCxAkEfB_Bl@gBh@wBj@_B^wFjAq[pFuFlAkFtAoFlBmF`CoCzAeC~AgAx@kA~@qCbCgBdBiBhBmCjDkCtDmChEwB~DgBrDo@xAkBvEu@tBaAtCcAfDcAxDu@|Cu@lDo@dDk@dDe@bDg@xDc@`E[dDWlDa@~Hy@xQUhFWlFYfFa@xEu@zG[hCc@lCmAvG{@~D_AbE{@`Ds@fCu@`CkBlFeIfT_BrE{@jCmAdEw@zC_FtSgCbKkA|DqA|DaDlIsAxCwArC_CdEaCxDgB`CeBzBeBtBiLnMcSvTqGjH}CnDwCpDaBxB{A|BuA|BwAdCuAlCuCrGgApCaAlCmB~FgBdGoD~LyA~E}AtEgB~Eq@dB}ChHkBbE}BxEqI|QgB`E{ArDwApDmAlDy@bCcBzFgAdE{@zDe@bC_AzFWpBUxBSpBSdCM~BIdCGdCCtC@tCDvCJnCNjCTnCTtBXtBr@hE`@jB`@bBxCzK~@pD\\`B\\dBX~AT`BTnBPbBJfAHpAP`DH~DB~BCpDGhDQ`DUzC}@dHa@fCe@bCm@`Co@zBo@pB_BhEaC`Gi@|Ag@|Ai@bBi@vBa@jBi@xCe@|CyBjP[xBYfB{@vE}@fEaAdEaBvGoBxHuCrLg@vBgB`J_@zB_@bCw@tFq@vFc@fEc@rE{A~OqE~f@i@rGyJlfA}BzVUvBY|Bi@nDc@zBe@rBi@rBy@jCy@zBs@dBy@dBy@|A_AvA_ArAgAtAiAlAqAlAsAfAeAr@kAp@eCjAeJlDka@lOgJhDuIdDuI`DcInCgHvBuD`A_E~@yIhBsI`BcaAfRwc@tI_^|GuMjCmF`Au`@xHid@xIuGnAeQlDyA^wCx@{Bz@iCnA_Af@{BvAmBvAeBxA_B~AsAxAmAxAqAfBiA`BqAvBw@xAy@zAw@dB_AxBy@vBw@zBiBbGy@bDu@~CcHjZkAdFe@fBe@bBg@zAmAbDg@jAq@pAw@vAw@lAu@dAoA|AkAnAwArA_BhAkAr@uAr@wBx@gBd@gAPiANkALgKp@}DZ{ARoAR_B^kBf@_Bl@qAj@wAt@sAv@uA~@sAdAcDzCmAtAkAxAgBfC_BjC_AfBe@bAyAfDqApDkAvDo@`Ck@fC}@lEu@nEwEpZcIdh@gGr`@{BvNe@dCg@`Co@dCs@dCc@lAa@fAkAlCcAtB_A~A_ArAq@`Aw@`AkBpB}@t@}@p@yAbAeB~@yW|M_FhCwcAnh@kO|HkBfAqDhCuAhAyBtBqBvBsBhCqBrCkB|C{FnKkCrEeA~AgA~A_BnB{A`BaB~AcBzAqFjEmCxByBlBu@t@yBbC}AzBgB`Do@nAs@fBm@~AoA|Dw@fDUnA_@zBWlBSfBQ`COxBGhBE`BCfB?|C@dBD`BF|AH|AHvALrALlA`@`D`@zC|AfJrElVp@~DzAtJh@|Dd@|D`@~DVbDVnDT`ERhEJpDHpDDhD@zDAhFAfCEdCQrGYtGW`EY`E]vDc@tDa@fDe@nD{@dFw@fE}@`E}@|DiB|GiAvD{@~BmA~CwAhDuA|C{AzCk@fAi@hAcBzCoChFaAtB{@tBa@fA{@lCm@|BSx@_@jB[fBU~AWpB[tCYjDq@|IU`CWbC]`C_@rBWpAy@hDeAdDk@|Ai@lAe@bA}ArCgA`B}@jAqAxA}@x@cAx@eCbBaB|@mEzBqBhA{@j@s@h@aAx@u@t@aAdAy@bA}@rAaAzAgApBcItO}LbVmBnDwBzDgA`BwAlB_BjByAxAaBtAaCfBuGrEyLjIkFpDuPjLkBnAuA~@qDbCqDdCiD~BiCbBoC`BaAh@sAl@aA`@{Aj@sIvC_A\\_A`@{BjAmAx@iA|@mAhAeAjA{ApBmAnBeAlBcAzBo@~Au@vBaA~CcDhL_Nte@iKx^qDvMkBhGsChKiR|p@}CpKgBtFaBbFiBzE_B~DiB|DcAvBcApBiBfDsBjDyBdDwBzCgB~BwBjCaFvFaFhFmKxKqPbQoUjVuC|CaBhBaBrB_BrBuAnBeBpCcBtCw@zAu@zAiB`EkAxCgAtC_B|EuAxE}@lDy@nDk@tCg@lCaA`Gq@zEq@dF}Jzv@kCjScChRiBlNqDdY{AtLc@xDa@~Dc@vEs@`J_@hFY~Eq@jNuBfd@iAfUWxDQjBY|B[rB_@tB_@hBe@fBm@nBiAbDiAhCq@pAcAdB{@lAy@bA{@bA_A|@s@p@q@f@oAz@wAv@gBt@qAb@y@PaAP_BTiBH}@?}ACaBGgHe@cBGuBCwABuAH{BXiATyA`@cA\\aBr@{Ax@qAx@cBrAkAfAkAnA}@hA{@jAeBpCwOvYwBfDwBxCcC~CcHtIcC|C}ArB_BrBaBrCw@|As@zA{@zBy@bCkAfEe@tB]hBm@rD]lCkAfLq@`Gs@xFwAfI}@`E}@xDiBrG_ApC}@|BeEvJeAvBgApBkAjBkA`BwCfD{A~A}CdC_CzAiDbB_C|@eA\\oCn@}B`@gD`@wGj@eBXmEt@sA\\aDdAyAl@oCxAsEhDeDrD{@hAw@nAqBvCmFnImFnIyCpEiFvHcD|D_DrDuHhIqE|EiWvXm@p@mFxFwCbDyChD_AlAaApAoBzCaAzAqCtFsAzCsBtFe@rAcAhDoAbFo@xCm@`Ds@jE{@nGyBxR]nCy@pF}@|Ec@jBg@rBc@|As@|B}@fCwAlDe@bAeAtBs@nAgAfBiA`BqAbBiBtBgAhAwBjBmA|@_HrFoUtRwEvD_BxAuClCyC`DgAlAwCnDgC~CyEjG}CdEwDrFqB|CkAlBgCpEmCjFaAjBcCvE}InQcDfIoCrIkAlFiArFwCpPeG`]iFdZkDzRwIvf@_Lzn@cBnJyAxFwAjEwBxEsBtDcBjCcJfLcTvXgV`[}FtHsIzK{f@jo@mCjDmCpD{CxDeL`OkG~HgY|^}g@tp@qD~EcDzEm@x@oDtFiF~IgBdDaDjGs`@ly@wn@drAeBtD}@pBw@jBiAvCw@vBeCzHeApD_AnDaA`EaB|HsAzH{@xFa@zCq@fG_Fbh@gExc@o@pFc@nDi@tDcArGy@xEg@bCo@~CiA`Fk@zBgB~Gg@dBaLf`@cWb|@mOzh@{B|H{AfFsNzf@qItYyAjEe@jAk@pA_AlBqAdCwAxBo@~@}AlBmAtAwAtAaBrAmBrAiAp@uAr@_A`@qCbAsFfBqBt@kFdBaA^wAr@wA|@sAfAu@r@cBtAuBvB{@n@a@^e@\\c@Vm@X}@To@Jo@Do@?k@Eo@Me@Ms@Yu@_@_CsA_@Q_A[aAQq@Ca@@_@Bs@Lo@Rq@ZYPk@d@[Zg@l@W`@m@hAe@pAa@xAeApE]rAk@lB}@vBi@lAsAzByEtGq@`Au@jA[r@Sb@s@jAUXOPg@\\e@Pg@LSFMHOJWVg@j@WRKDKBUDa@@UCYIgAa@OCw@?k@K}@GeAC_@?oNf@wA@e@Ac@C]Ge@Ks@Y]S[U[Y]]o@{@m@gAc@aAUy@Mi@UeAOeAMcBCq@CcB@_BT{LDmEAcBEgBEk@MaBQ}AKk@YwAk@{BgHcUq@oCOo@a@iCKq@O}AGs@KaBGaBCcB?u@@iBDgBHgBNsBrBkTR}BJeBFwA?}@?m@Am@E{@Eq@OwAW}AQcAq@}CyB}Js@aDmCqL}@iDaCeI]sAc@iBo@cDeAcGcAgFo@sBQg@[o@c@i@UYc@c@]Yi@]k@YwAm@]Qc@[Y[OSWc@Sc@Wq@_@uAqG_ZqF}V_BaIsEaVImAGaA@e@D]JYDKNSLIXGP?RBTLPVNXJ`@Fh@?f@Af@Kh@Ob@IN[ZMHSDUBkBC{@Bq@C{CCaCKsCUyGUq@E_c@w@}AAqA@aADeBLu@H_C`@sCp@cBj@_A^kAh@q@\\qBlAeAt@}@t@{GpGgKzJiF`Fg@d@iAv@uAv@{An@wA^_@H}BTcBFkAE_CWq@IyCy@kBs@m@]e@_@w@u@eD{DY[i@e@[U]Qm@QQCm@Co@Bm@Lm@Tk@^g@f@{BjCQPe@`@_@Ra@P_@H[Ha@BqBIqNYqA@aDNqDHcEXa@AmASYAW?g@HUJUNSN_@f@Wb@g@rAsFnRsC|J}@rCmIlYa@tAe@fAcAnBo@`As@z@w@r@{@j@qBbAwBz@oB`AiAr@yBtBy@fAkAdBeAnBmCtFiEhIgAnBiSp`@cDhGy@xAqL`UwAlCaBdCkBzBsBlBwHtE_At@wAlAqKzHu@d@]Nm@RYH]Ds@Fk@AuG_Ac@@oAMyDUsAGsBC}B?}BFoCNoAJgEh@gDl@sCr@gDbAeBn@qAj@_CbAcAh@gDnBqCjBoCrBoAdAeB~AuEbFmC|C[f@mA`BqBvCcA~AeAbB{B|DcAlBqCtFaBnDaDfHuAhD{FfOgUdo@mFlNkDjIiDrHkB|DwBbEmE~H_EzGuEbH}F`IyBnCsDjEuE`FsBpBqDjD_ElD{D|CkFzDyBxAcGtD_DdB{C|A_DzAkIjDsI~CmJ|CmJtCq\\xJkKjDmK|DmKvEeG~CyBnAuAx@_DrB}CvBmF`E}CdCyClCcEzDeHnHaGfHiGjIqC|DoCdEuCzEuCjFkDrGeD`HmEbKeBdEaBjEmEdMgEjMoEtMaBvE_CfGeC~FwDfImDvGkDbGkDrFkHjKkHdK{GhKaC~DaCdEoD|GkDhHcBrDgMpYwBtE_CtEiDdGwA|B}AzB{DlFmB`CkCxCgCjCqBjBcDnCmCtBgBnA_BdAiBfAmDjB_FxBiDpAkDfA{Cx@}Cp@sDj@yDd@cDZiEh@gEl@uCt@wC|@eDtAsAn@oAr@cCzA_CbBmC|BkChCsCdDqCpDaHdJwDtEyDjEsDtD}DnDsBdBmF~D}B|AeEhCiE`CcF~BqBz@mBr@wGvB}FxA{Cj@iSbDyE|@uEjAoDnAmDtAcErBkEdCqGrEiDvC}CzCkE|EcEnFyClEm@bAm@`AkBfD{@`BgDdH{BvFyA~DyRrk@yUpr@wA|D_@~@{@rBoApCwAjCe@z@cBjCgBbCiB|BiChCaCvBeEtCmDtBo@ZqF~CkDtBiD|BsEvDaAz@mChCsC|C_CrC}BxCoC`EiCfEaDbGwCbG}C`HqM`[}HfQyBlE{BfEyAfCwA|B}DbG_CdD_C|CsBdCsB|BqDzDyDrDoC|BkCtB}EnDkFhDaExBiErBsFzB}FpB{FhB}FbBwNrEaGzBeGrCaExB}D~BoFvDmFfE{DnD}DxDgDtDcD~DoA|AeBbCuBvCgDhFaC~DuL|SeEfHiE`H{BdDyBzCkCjDuCjD}ClDaDlDmEjEmBhBwDhD{DbDwMdKgF|DkFbEqDvCsDdDcD`DgDnDwDrEqDvEkFvH_FrHyGhKoCbEsCdEmEhG{ElG}DxE}AfB{BdCgEjEyFlFaEpDiEhDwDpC}EbDkFdDqIzEqThLwIzEeL|G}KrHwIrGqI`HcHjG_ExDwDtDoH|HiHhI}HtJsH~JoFzHyElHoEfHkErHcGzK{F`LsCbGoChGwBhFqBpFwA`EsA|D{C`KoAzEoA|EcBnHc@pBq@`DmAtGsAzHw@jFk@jEk@hE}@dIu@`Iw@nJWpDoKp_BiCf`@q@jJw@xIoArLwAvKiBnLsBzKqAdGsA~FyBjI_AdD_A~C{B~G_CpGyAvD}AvD_BlDgBrDoD`HwDtGoDvF{DtFmDpEwDlEkEpEoE`E_EfDsIfG{R~LcFtDwDdDiDnDgDbEaDtEoCtEgC~E_CfFwBnFoElLeErKuCbH{CxG_CzEeCvEuDrGoDvFoC~DwDhFwF~GeDpD_E`EaDxCgA`AqC|BkBxAg@`@cDzBeDzBcKdGaGfD{FjDsE`DuC|BwBlBcD`DoBvBaCtCuAfB{AtBqB|CkChEg@`A_B|C_CzEuBbFeCtGy@fCwB`Hw@tCiBxHuArGmAtGiAvG_VnzAoBhL}AhIcAxE{AtGuBfI{CjKuBlGgA|CyFzNgGvNoG~NwEzKcVzj@uHjQ{BhFaCjF_CtEm@dAm@bAsB~C_BxBoA~AsBzBqCpCaAz@qDnCuA|@uAv@yAv@}Ar@wAl@_Bj@eCr@eB`@kB\\yARyAPeAH_AFwCFyCAeDO{BSaC_@iCg@iCq@cA[eCaAwBeAsBmA_BkAcBsA}@{@mAsAaAkAcAsAcA{AcAaB_AeBaAqBoAsCmEyK{B_FsAcCq@kA{A{B_BqBqA{AaB_B_BsAgCgBwC_BmAi@sAg@uC{@aZgHsIyBcDeAuAi@}BcAeBy@{CaBiVyMaFeCmBy@qBu@yC}@{Cs@aB[qDe@yBOiCKyAC}A?_BFeBPs@JiB^gBh@iBv@wAr@cAl@oA~@yAlAuAvAyBjCyApBuA`CgA`C_AfCkApDi@hBg@jB{@lD{Nhn@sBrJoBnIo@xCs@tD_@|Bi@vDo@tFUpCY`ES~DMpEGfEQ`PKpDOrDQdDUrCUpB[jCg@nDc@`CeA`Fg@hBi@nBcA`DeAnCw@fBw@bBkAvBgAjBm@~@uAjByAfBkAlAwApAcBtA}@l@}D|BoHzDwAz@_BdAwAfAmAbAmAhA}A`B_BhBqAdBy@jA}BrDaAfBwEfJuBzD_A|A}@pAmA|AqAxAqAnAyAlAsA`AmAt@uBbAyAh@_B\\cAPwALgAD}@@kAEkAKs@KmAWiAWyAk@oAo@_Ai@u@i@q@k@q@m@sAuA_AiAaBgC{@_Be@aAcBeEuE{MsB}Ek@kAuBmDyAsB_HoIeByBeA}AcBqC{@}Aw@gB_A{By@cCs@wBs@cCm@gCi@iCeA}FgBgKc@yBk@aCo@{Bu@_C{@}BcA}BeAwB}BoDgAwAgAqAaA_AcA}@eAy@eC_BaB}@eBw@uDqAcBa@cB_@{B[}BUeFWsZgAsI]eGQ{HWkYeA{ACsCDq@DwAP{AXaAV_Cz@aAd@kBhAu@j@eAz@kBnBiArAsAnB{@rAeAhBeCzEgFtK{AxCeBbDuAzB_AtA_AjAuA|A{AxAmA`AoAz@iAp@kAh@eBr@eBl@iElAcIlBiCv@sCdAuCvAgBbAgBnAkBvAiBbB_CbC_AhAcCdDkAhBuA`CsAfCyAdD}@vBiArCwDhKwC|Hw@lBsAvC{@fByAhCyAzBwAjBsAxAuArAqAdAmChBuC|AwMfGgCrAkAr@eAv@kCvB{AvA}AdBeEbFwDpE}AbBgAfAsAhAcAn@wBlAaC`AeAZcATyARyALcA@cA?{AGyBUuBc@iA]gAa@gCsAcCaBeDeCeD}B{Aw@{Ao@sAa@wA]oAUuAO}BK_CAyBFoLf@qCFmBAmBG_BOaBWyA_@wAg@oAk@qAs@aAm@eAy@q@k@q@q@uA_BgA{A{@uAaAeB{@iBw@oBw@uBm@oBi@mB_AaEw@aEu@uEYkBaAcIg@{EmBsT}AcPg@cFSiBg@iEa@{Cw@cGcAmGiA_HoAyG{AmH_BgHeAiEi@sBqBoHyCqJaDgJmCwGoCiG_F{IqCiEmCqDsC}CwCyC_DoC}AkA_BgAkBiAkBeAiFqCeH}CcE_BmCaA}CcA_D_AuHmB}Cq@{Ci@cFy@eFo@aDWeDMsBAeCHgCX{B`@qA\\qAf@gBx@eBdAcBlAeBzAcBfB}ArByAxBsAbCu@~Am@vAm@`Bg@|A}@rCw@zCkBxHkBpIy@vDkBfKuAhIoAlIgFpb@mA`Iw@pEmBvJy@|CqArE{@fCm@~AsBfEkAnB_AvAmA~A_ChC}AvA_BrAuBtAeB`AaJlEmIhEsA|@sAhA{@t@}@z@cBjBcBrB}@rAgBlCaBxC}AbDcAbCiAzCoAzDsAdFq@~Cw@`EeDnRcAbFgAxEuB`IeGzSqBnHiBnHwAfGsAjGgA~FaAnFsAjIkAnIcAtI_AvIg@nFk@fHa@bG_@pG[rGWfGk@jPg@|SYzM[lM[pKa@jK]hGa@jG]fEe@|EOzAk@rEu@dFo@vDg@fCk@fCw@bDcBdGaAzCgAzCeAnCi@rAmB|DoBbD_CnDeAzAgAxAyL`MeC~BqLxLcBhB}CpDqElFcGnGuCjCyC~B{CpBkEfCgD`BwEdBgDfAgDr@qCd@aC^uDXeDL{DB_DEwCSiGq@wB]wBc@eBe@eBg@iC}@eCcAiCmA_CoA}G{DkIsEeD{AgDuAmAa@gBi@_EaA}Bc@_Fu@mBS}DU_ACmCAcBAoBFuCJeE^sAN_C\\mDr@_FpAsAb@_EzAwPtHaGbCqA`@yCdA_D|@gFdAaIfAeDXiEZ}Kn@wEZqGv@uEx@cFlAmCv@iCx@qDvAoDbBwEdCaFxC}KbHiE`CkEjCkDlBmDbBuD~AgDnAsEtAuElAgB`@{AXuEt@yD`@wCTkBHyAFyDFyD@yBCyESkCQgBQwGy@{Dw@yD}@sEqAiA_@aFkBeDwAwEaCoBgAmBoAcAk@uBwAmCsB}DaDsFeFmCsC_DqDy@aAcC_DmCoDoAgBkNoSgCiDiEeF}AaBaDyC{CgCaBoAoBsAuBqAmDmBwCsA_C_AoDkAmBi@}@UuFgAsBScE_@yBIeBEoBA}B@oBF_G`@oe@|E}QnBmTzBa_@zD{El@eDf@yB`@cHpBgCbAgElByAv@wBlA{DjCwAdAwAhA}FnFgAjAiCxCmDlEqDrF}D|G}EtI}EzHqCjDcCfCgC~BoCnBgAp@uC|AaBt@iAb@sBl@_AT{Bb@cC^_Fl@aEn@kFnAmChAqB`AuBhA{DtCaCtB_DdDgB~BcB|BwBlDeD~Ge@hAk@vAkIbTiG|OyPtc@oBlFyA`E_BlFw@tC{@jD{@vDgAzFeArGeApIKbAe@jEYnD_@xGQ~De@fO[`KY~HY`G_@tFq@dHi@lE]hC}@xFsA|Ge@|BsB`IsA|E}AbFuDfMeBhGs@nCuAxFa@lB_ArEUjAqA`Iw@`GuAdLyAzM{@`Hu@hFu@xEw@rE{@xEq@hDgAzEk@vBoCxIy@zB}@xBcCrFyE|KyBfFqD`J}AhEyAlEeBrF_HxUiClIe@tA}D~JcDrHyDpH}EdIqF~I}AnCeBbDwChGsAbDaAbCkBdF}AtEm@tByAnF}@lDy@lD{@fE}@pEaEnTmAvFu@zCs@hCmA~Du@zBuBxFu@lBsDzHeJ`QeA|BeAbC{@xBy@|BgAjDw@rCa@`By@pDu@dEc@vCc@vCkCpT{AxLo@`Eu@pDu@zCaAhDu@xBy@zBwA~CeBrDeArBaCdF{@xBeAzC}@xC}@fD_AjEoAzIsErm@uAzTaBrSu@tGmAbIgA|EmBlHoChHyBlEaDzFgD`E{ExEyJpGeC|AiC~Bq@v@u@`AcA~AeAhCyCxHuAfEi@fCe@vCeApJcApNMfAKx@Y~Aq@nCo@|BaAxCm@|Ao@|AgBbDqBxCuIrJwAnByA`CyArCaA`C_@|@e@vAgAlDwApGe@lC_@nCWzB]hEYfGM|DEnF@zFBhBLzGP`Gl@jOzAr]pAb\\BpB@lB?fBChBKhDGjASxC[zC[~B_DbR]bC_@pC_@rD]tDWtDGnAUrHE|CC|C@pEDnELpFDbF@rCClBC|AGtAS`DIhAMfAUbBSpAShAWnAu@pCWz@y@|Bi@pAi@hAe@|@q@hAm@~@kAtAgAjAiA~@i@`@iBfAuAn@eCp@aBV{AL}BA{AIuBSqAI}@?y@@iBLqB^gBj@mBz@{A`AuAfAgDtCs@j@uBrAwAp@mA`@q@Ri@L}AVuBLw@@y@Cw@C{AO}Ds@iIcBqV{Ek@_@c@Ok@Wg@Yk@a@g@e@o@q@k@w@]k@Yk@a@{@[}@i@cBWkAMq@i@cBgKks@wEq[yMi~@q@{Ee@qDkAuJu@gHc@uE]wDY_E]oFYkF]qIMkDUcJGyDOsNMwVQwf@EuEI}DGmBSeEW}C_@{DqJsw@k@aEe@kCq@aD_AwDaAaDg@wAm@_Bw@mBq@yAaAkBeAiBaBgCcCeDeEqF}C}D{AeBi@g@sAmAuAcAkBiAoCqAsSoIsNaG{G{C]Q{BqAwCsBqEsD{AuAaCaCkAsAuAaBsBmCoAiBmAmBuBmDi@cAuAqCqAwCmA{CcAsCeCqIcBwHqJgp@oAgIeA}H_@aCiDkVq@qEeA{Gc@gCu@aEcB_Iw@aDq@cCcAqD{@oCgAcDeAyCoEoL}B{FcBiEoBqEu@}AoAcCqAsBcAwAyAkBwAcBoAqAsAmAeCmBqBuAyA{@yDsB{Aq@cJsD{Ak@_Au@aBw@yD}AoBm@oCu@qA[mCk@a`@aIsA]o@Ss@YwAs@i@]g@_@gI_HuAiAeAs@oAs@_Ac@_Bi@cBc@m@I{AQeAE_A?wADsBTeB^_Bh@kAh@wYnPyLbHgBz@w@\\q@VsBj@mATmAPmAJqAFeCCaAEaAIuAUmAW}Bu@oB{@eE_CgJmFoE_C}B}@sBo@qBi@gASaAO_BQkBKyAEaAAmB@mCHgGXye@lB_BJ}BR_ANwB`@gAV{DfAqGpB_RtFsDz@{B\\cEb@cETmFReEZ}Dj@_E|@k\\`Ke[vJs`@|LcB`@sDt@uB\\gs@hH}Cb@_C\\{FdAiYjG{^fIuAb@sAj@iYxNkVdMaF`CsChAmBj@sCl@sBZqBRqAFsBFih@AaGBcGHiFNqFVgWdBoBPqBV{Cj@_Dz@s^rMuC~@eCl@cAPeANmDXiABqB@}ACuAGkCWcKqAaw@eKyCc@wCm@oBg@kBq@}BaA{BkA}A_AcBmAqDwCeVqSqK}IiCcBmCqAcDiAmCi@kAQ{AO_AE{BCkABqBJuBXmCf@eR`EeB\\m_@dIsFnAwDdAuHxByHbCuHpCcHlC{D`BeIrDeUrKqI~Doc@xSeEhBcEzAwC|@wCp@aDj@gDb@{DVcELuND_WDkKD}CHyDTqEd@yAT_J~A_B\\yEv@_BR_BNsADyA@yAGyAKcAOuAYuA_@y@Yy@]q@]wAw@uA_AcBsAu@u@y@{@kB_C{CkEgKqPwDmGuMqUei@}aAwEsIkCkE_AuA_BoBoByByCeC}B_B{@g@}BiAmBq@mA_@}A_@yDg@yJ_AgQ}AoZkC}Fq@cDo@mA[_DaAqCiAeDaBmD{BeAs@iA}@qBiBkAgAmAoAqA{AqA_ByB}CwBiDiAqBgAsB{AcDkAoCsBsF_B{E}Qek@uR{l@wK}\\cCmHuA_EcQoi@{K_]gGoR_KmZcDyHsAsCeAoBkAqB{AiC}CoEqDoEyCaD{AuAiB_BwBaBwB_BuWcRwA_AeEcDuDeDmDuDwCmDgx@mdAu\\cc@oIcKg@i@yBwBmHwGsDyCkHmGeFkEiGsFsG}GeDeDcQ{Rgg@uj@aOiP_GyGsToV}L}M}HeJqDuDyBcCuc@_g@cHyHeUeWcFcGuC_EuBgDcCmEw@}AcDmHkBkEoD{ImIsS{BgF_C_FgAwBy@wAsA}B{@sA}CiE{AiByAcB{AaBs@q@kC{B{AkAoA_AeDsBkAo@oAm@sCoA_C{@}Bq@oCq@_GoAgw@oP}E_AaFw@uBWwBMaEOcA?oDH{DXuP`ByMjAmBHgDBgBCsBIcBImBUqB[wBc@}HuBoSmGkPaF_D_A_Cm@aB_@iAS{AUuBUcHe@_W}A_SqA}BYeBWaE{@mBk@iBm@cDsA}C}A_EgCiCmBwAkAuBoBw@w@eCwCmAuAgB_CmBoCyZqe@yCgEu@aAsCiDyA}AuCoCqBaBiA{@cAs@oCcBeCsAgBy@{B{@yBs@iBi@gB_@qB_@aNmBmSoCcFy@eAS_FoAoC_AsBy@oB}@{FmDgDcCuAkAgEcEeDyDaDmEoCoEu@oAaAkBaAeBcCyE{HoO_CcEwC}EyAyBgCmD}CmDkCkCqCgCyCaCqEkCmEyBcE}AuBo@yBk@eEs@}@MkAMoAK_BIeBEyAAgCBaCLaFd@cFbAwCx@iEzAiBt@ag@fTkUxJgr@bZaEdB{Af@gEhAiEz@mCZuBNmEL_DAkEO_a@iEgAIaF]iDEkDDqCLkCViBVgB\\cB^cBb@oDlAgDxAmCtAiC|AgCfBcAt@}@x@cBxA_B~A}AfBkAtAmBdCaDtEu@lAcBzCmCnFaCxFuAnDmApDs@zBk@pByA~FmAdF}@bFiBdLwD~VwAfI_@jBq@bDeApEmAnEiAtDe@vAgBbF{ApD}AhDiBtDiApBy@tA}@vA{B`D_C~C_DfDqCjCkDxCiCbBmC~AqCxAuGfC_Cl@sBb@oB\\aC\\kCT_DJgD@wNe@yT_AiLe@gVcAoRw@_BCwDByAHwAJyD`@sB\\aE`AkA\\sC`AgWlJcWpJ{QxGwB~@wBdAcCxAaC|AeCpBaCrBuCrCeEdFqe@tl@oNnQcr@p{@oG~HqK`NwCdD{CtCyBnByB`BaC`BiC|A_FzBeHxBsDx@oEl@qCPgJJmEWgHy@sLgB{VsD}i@aImb@cGgF_AmBe@yBm@mDuAuDeBmF{CcIyEol@g^eJuFiI_FuJcGoF}CcHgEgHeEuCqAoFiBqCw@{Cm@wy@}NwCm@uCw@wCcA_DsAiCwAgEoCkAy@{BmB}ByBmOmQ{\\ea@mU{Xul@qs@sDwDyDyDu}@}z@aReQ_B}AeD}C}@u@wAkAc@We@S[I[EiAAy@LgAh@YPu@z@]l@Wl@Qd@Sv@Q|@Mx@Gt@Cr@A~@?l@Dz@F|@Lz@Nx@^bB~AhFZhAVpANdANbAFbADtA@v@AvAAr@GbAUrBQ`AOp@u@jCk@bBkArB{A~BkHjK_IhLsAjByBfCwAvAsBdBgBfAoNjHe]xPcLxFcLvFqIlE{BxAcExCiEjDkBjBwC~CuCjDeCbDaCpD_ErGcDnGqAnCkArC{B|FeBxEmDdLeAxD}@xDmBpJaBrJaBhLgAhIua@~}CkDxWcIjm@qBfM{@`FqA`Hu@tDwAvGoA|Fc@dB{CvLkCxJwDfNaBbFy@`C{@|BeA`CmAhCyAxCiBnDw@tA{DbG{C`FuOnV_HvKiJfQk@hA{MhWqD`HOZWd@qDbHuTbb@{EhJ}@|AmSv\\i^zk@o]`k@_ElGcCbDaAlAgDrD_B~AaBvAiCnBkChBaDhBiCnAgE~A{Bp@uBd@{Dr@cCVwALwAFsDHgDGiDQeAIuDe@uN}CiE_Ay_@gI}HyAeAQiEYiCM{BCyEFuBLaD^_BVmDv@wA`@qC`AaEdB{BhAwBpAuDjCqBbB{AtAoAnAgBjBcAnA_C`DgBfCaCxD}@`BaAjBoB`EoBrEw@rBeEhL{H|SaBdEaCjF_CjEcCdEsBxCibAzqAqG`I}EdFuFlEqElCkAl@oEpB_g@lT{CvAuC~AkBnAwEpDoBdBuC|CmC~CwAlB_CnDeC`E_CnE{B~EoB`FcHrR_\\t|@aFhNoClHwK|YmE`JiBfDsF|HcC|CuDzDs~@t|@kM~L_]d\\kbAh`AmF`FkElDeEtCqBdAcBz@yClAkF|A}A^mDl@oXbDyCZsL|AsSbCa`A`LgGh@y~A`IudAjFkMl@eBJaGNcOBuh@IqUCcEGeEOyHc@_VwAoO_AoO_Agm@sDeY_BkDEaC@q^fAoAJyCZeBZqEdA_D`AuD`B{@`@yGpDm@`@uDrCoH`GiI`HwBnBmDxDo@t@kB`CmAbB}BpDuBrDcElIaEbJaK`UkCvF_DbG_CxDaClDyE|FkDhDiDzCgj@x^}DhC_EzBaEbB}DnAoDz@sDp@{BR_CP_[dAaCPmC`@aC`@qD~@wC~@wCjAyDlBeHfEgRjLyBpAgFdDyGrEwG`FqGzFkAfA_DrCuWjVyJhJ{BfBqDhCoDpB}CtAyEdB_EdAeLlB}[nFaTnD{OjCq]|FiCf@kDr@gF`BiAb@oLfGcHzDiH`E]T}JpFeNnHkF|CaKrFkSjLqOrIyMnHqOfIgOzIuPjJsPbJ{LdHaLjGaoAnr@g@TkDdBcBt@aDnAyAd@aCl@eCd@yC^sALqCPco@zBeERaEXsFZaDNqELqW`AiAHqN`@qLh@_M^sMf@qDLiAAyKVaORuBAkK[aEUqHm@oN}AkJ_AuJe@oCAsB?iCJkDTeFt@aARmAZyCz@yDxAsClAeDzAug@`V_Br@oCz@gD~@uCf@wALgAD}@D_A@wEAqCU{D_@_DW{AGoDKsB?qADgAFeFd@yDp@iBb@{Cz@gC~@kCdAiCjAqEdCeBdAiFhDoErDwE|D{A|AaBfBmD`EkB`CmCvDkE`Hy@tA}DjHgEtIuD|H}D`I{CtFcGpJuBpCcDbE_IdJkDrDOP_HpHwCbDgBhBo@t@kBlBeA`AeBlAg@T{@TiAL}A?i@GmASiAa@i@[{AcAgCcBmCmAkAa@mAYaBUqAIiGOkBOuDw@mCw@}NcGoEiAqDo@qDa@cCMcSz@}TlFaCf@aCNiDDsBA_HHk@DsBTcATeA^}@`@sAx@wAlAa@d@e@j@cAdB_ArBWp@e@rAq@zCq@vEUxBa@~F]rIa@lIQrCUhCSzAi@fDeAxFc@fBi@nBiAlDcIjSeCfGqAjDwHnRgGrO_l@b}A{I`UgW~p@{DvJwArCgBpCsBhCg@d@iDxCsAz@mInEmHpDyDzBeEnCeG|EsQhN]^c@`@cBnAoAfAa@v@W`@Q\\Ul@_@pAQdAGx@GbACrADjBNbCVjCJ`B`A~I^`EZ~DLfCHnCFdDBbF@`FBvFDnBV|FhAjQR|DZhHp@~WrA~OL`ECxCKvCQzCAjB?`BD`BL|BV~Bn@tDb@zCL`BNrC?pBAvEE~BIbCUlE[xEe@nG[bDiCrUa@vB]nAs@hBo@lAmA`BsC|CmA|Ag@r@k@jAg@hAYz@[hAu@jD}@fFk@zCk@dCaBhGa@pA{GfSu@|Bc@hBc@|B{@`FWVy@zFc@zDEl@IzACfAAxAoCIsFA}HG}FC}SQoKK{DIaKCgGDqQKsCGkCUuDe@e@Kw@UkAWmF_BaBo@wC{AYUaCkAqAw@iCuBi@e@c@Wa@Om@ES@_@FFm@DcA?eBOgEUcEMmCGqBA}BDoABc@}AQ[EoA_@uAo@gAc@eAMc@@k@Hy@TMFcIbEk@Vq@PUDq@FY?k@Ec@I_@K{@a@e@]eB_BuAaAiH{E[IwDiCg@c@eEqCa@Wa@Qg@]m@e@aAk@yAaASYkBmAqDsEa@a@SGkAF[DWqASo@a@cAaAiByAgCiEgHwCuEmBaCoCgD{@[gEmFUI[?WHKFw@z@{B|Ci@|@_@h@aA`BMb@qB~CYPgAdBW^&#39;,
+   &#39;instructions&#39;: [{&#39;distance&#39;: 62.672,
+     &#39;heading&#39;: 119.88,
+     &#39;sign&#39;: 0,
+     &#39;interval&#39;: [0, 7],
+     &#39;text&#39;: &#39;Continue&#39;,
+     &#39;time&#39;: 22561,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 53.937,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [7, 8],
+     &#39;text&#39;: &#39;Turn right onto Singerstraße&#39;,
+     &#39;time&#39;: 12136,
+     &#39;street_name&#39;: &#39;Singerstraße&#39;},
+    {&#39;distance&#39;: 70.162,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [8, 9],
+     &#39;text&#39;: &#39;Turn left onto Liliengasse&#39;,
+     &#39;time&#39;: 15786,
+     &#39;street_name&#39;: &#39;Liliengasse&#39;},
+    {&#39;distance&#39;: 468.987,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [9, 21],
+     &#39;text&#39;: &#39;Turn left onto Weihburggasse&#39;,
+     &#39;time&#39;: 105522,
+     &#39;street_name&#39;: &#39;Weihburggasse&#39;},
+    {&#39;distance&#39;: 152.599,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [21, 22],
+     &#39;text&#39;: &#39;Turn right onto Parkring&#39;,
+     &#39;time&#39;: 17167,
+     &#39;street_name&#39;: &#39;Parkring&#39;},
+    {&#39;distance&#39;: 317.592,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [22, 27],
+     &#39;text&#39;: &#39;Turn left onto Johannesgasse&#39;,
+     &#39;time&#39;: 50533,
+     &#39;street_name&#39;: &#39;Johannesgasse&#39;},
+    {&#39;street_ref&#39;: &#39;B1&#39;,
+     &#39;distance&#39;: 322.975,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [27, 31],
+     &#39;text&#39;: &#39;Turn left onto Am Heumarkt&#39;,
+     &#39;time&#39;: 32298,
+     &#39;street_name&#39;: &#39;Am Heumarkt&#39;},
+    {&#39;distance&#39;: 78.416,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [31, 34],
+     &#39;text&#39;: &#39;Keep right&#39;,
+     &#39;time&#39;: 10857,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 61.018,
+     &#39;sign&#39;: 1,
+     &#39;interval&#39;: [34, 37],
+     &#39;text&#39;: &#39;Turn slight right onto Große Ungarbrücke&#39;,
+     &#39;time&#39;: 6865,
+     &#39;street_name&#39;: &#39;Große Ungarbrücke&#39;},
+    {&#39;distance&#39;: 7.482,
+     &#39;sign&#39;: 1,
+     &#39;interval&#39;: [37, 38],
+     &#39;text&#39;: &#39;Turn slight right onto Ungargasse&#39;,
+     &#39;time&#39;: 842,
+     &#39;street_name&#39;: &#39;Ungargasse&#39;},
+    {&#39;distance&#39;: 168.944,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [38, 40],
+     &#39;text&#39;: &#39;Turn left onto Invalidenstraße&#39;,
+     &#39;time&#39;: 19005,
+     &#39;street_name&#39;: &#39;Invalidenstraße&#39;},
+    {&#39;distance&#39;: 639.849,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [40, 53],
+     &#39;text&#39;: &#39;Turn right onto Landstraßer Hauptstraße&#39;,
+     &#39;time&#39;: 71983,
+     &#39;street_name&#39;: &#39;Landstraßer Hauptstraße&#39;},
+    {&#39;distance&#39;: 140.618,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [53, 57],
+     &#39;text&#39;: &#39;Turn left onto Kundmanngasse&#39;,
+     &#39;time&#39;: 28123,
+     &#39;street_name&#39;: &#39;Kundmanngasse&#39;},
+    {&#39;distance&#39;: 272.621,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [57, 63],
+     &#39;text&#39;: &#39;Turn right onto Erdbergstraße&#39;,
+     &#39;time&#39;: 54524,
+     &#39;street_name&#39;: &#39;Erdbergstraße&#39;},
+    {&#39;distance&#39;: 203.806,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [63, 66],
+     &#39;text&#39;: &#39;Turn left onto Wassergasse&#39;,
+     &#39;time&#39;: 40761,
+     &#39;street_name&#39;: &#39;Wassergasse&#39;},
+    {&#39;street_ref&#39;: &#39;B227&#39;,
+     &#39;distance&#39;: 885.89,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [66, 83],
+     &#39;text&#39;: &#39;Turn right onto Erdberger Lände&#39;,
+     &#39;time&#39;: 88589,
+     &#39;street_name&#39;: &#39;Erdberger Lände&#39;},
+    {&#39;street_ref&#39;: &#39;B227&#39;,
+     &#39;distance&#39;: 713.377,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [83, 95],
+     &#39;text&#39;: &#39;Keep left onto Erdberger Lände and take A4, B228, A22, A2, A1 toward Budapest, Bratislava, Alt Simmering, Praha, Brno, Graz, Linz&#39;,
+     &#39;time&#39;: 45979,
+     &#39;street_destination&#39;: &#39;Budapest, Bratislava, Alt Simmering, Praha, Brno, Graz, Linz&#39;,
+     &#39;street_destination_ref&#39;: &#39;A4, B228, A22, A2, A1&#39;,
+     &#39;street_name&#39;: &#39;Erdberger Lände&#39;},
+    {&#39;distance&#39;: 85.886,
+     &#39;motorway_junction&#39;: &#39;Knoten Prater&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [95, 100],
+     &#39;text&#39;: &#39;Keep right and drive toward Praha, Graz, Brno, Linz&#39;,
+     &#39;time&#39;: 5153,
+     &#39;street_destination&#39;: &#39;Praha, Graz, Brno, Linz&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 22361.184,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [100, 402],
+     &#39;text&#39;: &#39;Keep left and take A23, A22, A5, B14 toward Praha, Brno, Handelskai&#39;,
+     &#39;time&#39;: 906349,
+     &#39;street_destination&#39;: &#39;Praha, Brno, Handelskai&#39;,
+     &#39;street_destination_ref&#39;: &#39;A23, A22, A5, B14&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 50979.888,
+     &#39;motorway_junction&#39;: &#39;Knoten Eibesbrunn&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [402, 999],
+     &#39;text&#39;: &#39;Keep right and take A5 toward Brno, Poysdorf, Mistelbach&#39;,
+     &#39;time&#39;: 1620390,
+     &#39;street_destination&#39;: &#39;Brno, Poysdorf, Mistelbach&#39;,
+     &#39;street_destination_ref&#39;: &#39;A5&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;exit_number&#39;: 2,
+     &#39;distance&#39;: 5166.093,
+     &#39;sign&#39;: 6,
+     &#39;exited&#39;: True,
+     &#39;turn_angle&#39;: -5.56,
+     &#39;interval&#39;: [999, 1087],
+     &#39;text&#39;: &#39;At roundabout, take exit 2 onto Umfahrung Drasenhofen&#39;,
+     &#39;time&#39;: 188276,
+     &#39;street_name&#39;: &#39;Umfahrung Drasenhofen&#39;},
+    {&#39;exit_number&#39;: 2,
+     &#39;distance&#39;: 3424.504,
+     &#39;sign&#39;: 6,
+     &#39;exited&#39;: True,
+     &#39;turn_angle&#39;: -4.46,
+     &#39;interval&#39;: [1087, 1133],
+     &#39;text&#39;: &#39;At roundabout, take exit 2 onto B7&#39;,
+     &#39;time&#39;: 216076,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;exit_number&#39;: 2,
+     &#39;distance&#39;: 737.348,
+     &#39;sign&#39;: 6,
+     &#39;exited&#39;: True,
+     &#39;turn_angle&#39;: -3.08,
+     &#39;interval&#39;: [1133, 1155],
+     &#39;text&#39;: &#39;At roundabout, take exit 2 onto 28. října&#39;,
+     &#39;time&#39;: 74332,
+     &#39;street_name&#39;: &#39;28. října&#39;},
+    {&#39;exit_number&#39;: 2,
+     &#39;distance&#39;: 5199.916,
+     &#39;sign&#39;: 6,
+     &#39;exited&#39;: True,
+     &#39;turn_angle&#39;: -3.14,
+     &#39;interval&#39;: [1155, 1181],
+     &#39;text&#39;: &#39;At roundabout, take exit 2 onto 52&#39;,
+     &#39;time&#39;: 257149,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 148.489,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [1181, 1187],
+     &#39;text&#39;: &#39;Keep right&#39;,
+     &#39;time&#39;: 7424,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 174.779,
+     &#39;sign&#39;: -3,
+     &#39;interval&#39;: [1187, 1193],
+     &#39;text&#39;: &#39;Turn sharp left&#39;,
+     &#39;time&#39;: 8739,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;street_ref&#39;: &#39;52&#39;,
+     &#39;distance&#39;: 39038.772,
+     &#39;sign&#39;: 1,
+     &#39;interval&#39;: [1193, 1448],
+     &#39;text&#39;: &#39;Turn slight right onto 52&#39;,
+     &#39;time&#39;: 1545722,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 194054.111,
+     &#39;motorway_junction&#39;: &#39;Brno-centrum&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [1448, 3083],
+     &#39;text&#39;: &#39;Keep right and drive toward Praha, Svitavy&#39;,
+     &#39;time&#39;: 5891054,
+     &#39;street_destination&#39;: &#39;Praha, Svitavy&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;street_ref&#39;: &#39;D1&#39;,
+     &#39;distance&#39;: 576.084,
+     &#39;sign&#39;: 0,
+     &#39;interval&#39;: [3083, 3091],
+     &#39;text&#39;: &#39;Continue onto Brněnská and drive toward Chomutov, Karlovy Vary, Plzeň, Strakonice, Praha-centrum&#39;,
+     &#39;time&#39;: 26039,
+     &#39;street_destination&#39;: &#39;Chomutov, Karlovy Vary, Plzeň, Strakonice, Praha-centrum&#39;,
+     &#39;street_name&#39;: &#39;Brněnská&#39;},
+    {&#39;distance&#39;: 7320.581,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [3091, 3253],
+     &#39;text&#39;: &#39;Keep right and drive toward TEPLICE, ML.BOLESLAV, HRADEC KRÁLOVÉ, Vršovice&#39;,
+     &#39;time&#39;: 417811,
+     &#39;street_destination&#39;: &#39;TEPLICE, ML.BOLESLAV, HRADEC KRÁLOVÉ, Vršovice&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 5358.245,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [3253, 3359],
+     &#39;text&#39;: &#39;Keep right and take 2 toward Kutná Hora, Dolní Měcholupy, Štěrboholy, Hloubětín&#39;,
+     &#39;time&#39;: 461483,
+     &#39;street_destination&#39;: &#39;Kutná Hora, Dolní Měcholupy, Štěrboholy, Hloubětín&#39;,
+     &#39;street_destination_ref&#39;: &#39;2&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;street_ref&#39;: &#39;601&#39;,
+     &#39;distance&#39;: 3296.591,
+     &#39;sign&#39;: 0,
+     &#39;interval&#39;: [3359, 3391],
+     &#39;text&#39;: &#39;Continue onto Kbelská and drive toward Ústí nad Labem, Letňany, Prosek&#39;,
+     &#39;time&#39;: 168727,
+     &#39;street_destination&#39;: &#39;Ústí nad Labem, Letňany, Prosek&#39;,
+     &#39;street_name&#39;: &#39;Kbelská&#39;},
+    {&#39;street_ref&#39;: &#39;601&#39;,
+     &#39;distance&#39;: 143013.481,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [3391, 4788],
+     &#39;text&#39;: &#39;Keep right onto 601 and drive toward Ústí nad Labem, Mělník&#39;,
+     &#39;time&#39;: 4574498,
+     &#39;street_destination&#39;: &#39;Ústí nad Labem, Mělník&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 12431.251,
+     &#39;motorway_junction&#39;: &#39;Dreieck Dresden-West&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [4788, 4908],
+     &#39;text&#39;: &#39;Keep right and take A 4 toward Görlitz, Berlin, Dresden&#39;,
+     &#39;time&#39;: 424670,
+     &#39;street_destination&#39;: &#39;Görlitz, Berlin, Dresden&#39;,
+     &#39;street_destination_ref&#39;: &#39;A 4&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 480.992,
+     &#39;motorway_junction&#39;: &#39;Dreieck Dresden-Nord&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [4908, 4915],
+     &#39;text&#39;: &#39;Keep right and take A 13 toward Berlin, Cottbus, Dresden-Flughafen&#39;,
+     &#39;time&#39;: 19092,
+     &#39;street_destination&#39;: &#39;Berlin, Cottbus, Dresden-Flughafen&#39;,
+     &#39;street_destination_ref&#39;: &#39;A 13&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 1511.304,
+     &#39;motorway_junction&#39;: &#39;Dresden-Flughafen&#39;,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [4915, 4934],
+     &#39;text&#39;: &#39;Keep left and take A 13 toward Berlin, Cottbus&#39;,
+     &#39;time&#39;: 59138,
+     &#39;street_destination&#39;: &#39;Berlin, Cottbus&#39;,
+     &#39;street_destination_ref&#39;: &#39;A 13&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;street_ref&#39;: &#39;A 13&#39;,
+     &#39;distance&#39;: 175365.62,
+     &#39;motorway_junction&#39;: &#39;Dreieck Dresden-Nord&#39;,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [4934, 6099],
+     &#39;text&#39;: &#39;Keep left onto A 13 and drive toward Berlin, Cottbus&#39;,
+     &#39;time&#39;: 5707938,
+     &#39;street_destination&#39;: &#39;Berlin, Cottbus&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;distance&#39;: 276.281,
+     &#39;motorway_junction&#39;: &#39;Tempelhofer Damm&#39;,
+     &#39;sign&#39;: 7,
+     &#39;interval&#39;: [6099, 6106],
+     &#39;text&#39;: &#39;Keep right and take B 96 toward Tempelhofer Damm, Zentrum - Potsdamer Platz&#39;,
+     &#39;time&#39;: 19127,
+     &#39;street_destination&#39;: &#39;Tempelhofer Damm, Zentrum - Potsdamer Platz&#39;,
+     &#39;street_destination_ref&#39;: &#39;B 96&#39;,
+     &#39;street_name&#39;: &#39;&#39;},
+    {&#39;street_ref&#39;: &#39;B 96&#39;,
+     &#39;distance&#39;: 2918.749,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [6106, 6135],
+     &#39;text&#39;: &#39;Turn right onto Tempelhofer Damm and drive toward Zentrum, Kreuzberg&#39;,
+     &#39;time&#39;: 348395,
+     &#39;street_destination&#39;: &#39;Zentrum, Kreuzberg&#39;,
+     &#39;street_name&#39;: &#39;Tempelhofer Damm&#39;},
+    {&#39;distance&#39;: 379.791,
+     &#39;sign&#39;: 3,
+     &#39;interval&#39;: [6135, 6145],
+     &#39;text&#39;: &#39;Turn sharp right onto Blücherstraße&#39;,
+     &#39;time&#39;: 45575,
+     &#39;street_name&#39;: &#39;Blücherstraße&#39;},
+    {&#39;distance&#39;: 206.812,
+     &#39;sign&#39;: -2,
+     &#39;interval&#39;: [6145, 6150],
+     &#39;text&#39;: &#39;Turn left onto Zossener Straße&#39;,
+     &#39;time&#39;: 24817,
+     &#39;street_name&#39;: &#39;Zossener Straße&#39;},
+    {&#39;distance&#39;: 1604.708,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [6150, 6186],
+     &#39;text&#39;: &#39;Keep left onto Zossener Brücke&#39;,
+     &#39;time&#39;: 208244,
+     &#39;street_name&#39;: &#39;Zossener Brücke&#39;},
+    {&#39;street_ref&#39;: &#39;B 1&#39;,
+     &#39;distance&#39;: 635.178,
+     &#39;sign&#39;: 2,
+     &#39;interval&#39;: [6186, 6195],
+     &#39;text&#39;: &#39;Turn right onto Leipziger Straße and drive toward Prenzlauer Berg, Alexanderplatz&#39;,
+     &#39;time&#39;: 84792,
+     &#39;street_destination&#39;: &#39;Prenzlauer Berg, Alexanderplatz&#39;,
+     &#39;street_name&#39;: &#39;Leipziger Straße&#39;},
+    {&#39;street_ref&#39;: &#39;B 1&#39;,
+     &#39;distance&#39;: 632.781,
+     &#39;sign&#39;: -7,
+     &#39;interval&#39;: [6195, 6211],
+     &#39;text&#39;: &#39;Keep left onto Mühlendamm&#39;,
+     &#39;time&#39;: 93968,
+     &#39;street_name&#39;: &#39;Mühlendamm&#39;},
+    {&#39;distance&#39;: 0.0,
+     &#39;sign&#39;: 4,
+     &#39;last_heading&#39;: 321.72726112185984,
+     &#39;interval&#39;: [6211, 6211],
+     &#39;text&#39;: &#39;Arrive at destination&#39;,
+     &#39;time&#39;: 0,
+     &#39;street_name&#39;: &#39;&#39;}],
+   &#39;legs&#39;: [],
+   &#39;details&#39;: {},
+   &#39;ascend&#39;: 6707.49171257019,
+   &#39;descend&#39;: 6856.708219528198,
+   &#39;snapped_waypoints&#39;: &#39;}qfeHs~|bBafiYjybQ&#39;}]}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># HERE Routing API endpoint</span>
+<span class="n">routing_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://intermodal.router.hereapi.com/v8/routes&quot;</span>
+
+<span class="c1"># HERE API Key (replace &#39;YOUR_API_KEY&#39; with your actual API key)</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;UdxF47WFsWjfHYOX3-9AE2VHtV_a2qg4XhYIia2jAv8&quot;</span>
+
+<span class="c1"># Start and end coordinates (latitude, longitude)</span>
+<span class="n">start_point</span> <span class="o">=</span> <span class="s2">&quot;48.206389,16.384722&quot;</span>  <span class="c1"># Berlin, Germany</span>
+<span class="n">end_point</span> <span class="o">=</span> <span class="s2">&quot;52.5251, 13.3694&quot;</span>       <span class="c1"># Paris, France</span>
+
+<span class="c1"># Request parameters</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">start_point</span><span class="p">,</span>
+    <span class="s2">&quot;destination&quot;</span><span class="p">:</span> <span class="n">end_point</span><span class="p">,</span>
+    <span class="s2">&quot;apiKey&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+    <span class="s2">&quot;transportMode&quot;</span><span class="p">:</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>  <span class="c1"># Specify the mode of transport (e.g., car, pedestrian, publicTransport)</span>
+    <span class="s2">&quot;return&quot;</span><span class="p">:</span> <span class="s2">&quot;summary&quot;</span>      <span class="c1"># Return only summary information about the route</span>
+<span class="p">}</span>
+
+<span class="c1"># Send GET request to HERE Routing API</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">routing_endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Check if the request was successful (status code 200)</span>
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="c1"># Parse the JSON response</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    
+    <span class="c1"># Extract route summary information</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;routes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sections&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;summary&#39;</span><span class="p">][</span><span class="s1">&#39;length&#39;</span><span class="p">]</span>  <span class="c1"># Distance in meters</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;routes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sections&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;summary&#39;</span><span class="p">][</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>  <span class="c1"># Duration in seconds</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Route from Berlin to Paris:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance: </span><span class="si">{</span><span class="n">distance</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> km&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duration: </span><span class="si">{</span><span class="n">duration</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">60</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> minutes&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error: 400
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -424,7 +943,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Пропажа и поиски объектов в пространстве</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Пропажа и поиски объектов в пространстве</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Функция построения гистограммы</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Функция для создания карты</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">Перепроецирование VS установка системы координат</a></li>
 </ul>
 
