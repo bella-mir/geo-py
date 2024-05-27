@@ -322,7 +322,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Подготовка данных</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Алгоритмы классификации</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Методы классификации</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Равные интервалы</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">*Дополнение</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Отображаем гистограмму распределения показателя и карту рядом</a></li>
@@ -334,7 +334,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Квантиль</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Среднеквадратичное отклонение</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Пользовательские интервалы</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Сравнение алгоритмов классификации</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Сравнение методов классификации</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Итоги</a></li>
@@ -353,7 +353,7 @@ document.write(`
   <div class="tex2jax_ignore mathjax_ignore section" id="iv">
 <h1>IV. Методы классификации<a class="headerlink" href="#iv" title="Permalink to this heading">#</a></h1>
 <p>С классификацией данных мы встречаемся чаще, чем задумываемся об этом. Каждый раз, когда нам нужно разделить данные на несколько групп, например, чтобы отобразить интенсивность какого-либо показателя на карте, мы используем классификацию для создания интервалов.</p>
-<p>В этом разделе мы познакомимся с алгоритмами классификации данных и на примере карты плотности населения по округам Санкт-Петербурга убедимся, насколько сильно этот этап создания карт может влиять на итоговый результат</p>
+<p>В этом разделе мы познакомимся с методами классификации данных и на примере карты плотности населения по округам Санкт-Петербурга убедимся, насколько сильно этот этап создания карт может влиять на итоговый результат</p>
 <div class="section" id="id1">
 <h2>Подготовка данных<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>Импортируем библиотеки</p>
@@ -486,13 +486,13 @@ document.write(`
 <img alt="../_images/673a7af62c7f1cff7a526f6c03f2d08e897ec15b3cf6286d9c3f10e1a9461de8.png" src="../_images/673a7af62c7f1cff7a526f6c03f2d08e897ec15b3cf6286d9c3f10e1a9461de8.png" />
 </div>
 </div>
-<p>Посмотреть на гистограмму распределения показателя перед выбором алгоритма классификации очень важно, так как это лучше поможет понять, как распределены данные, обнаружить выбросы, определить оптимальное количество классов</p>
+<p>Посмотреть на гистограмму распределения показателя перед выбором метода классификации очень важно, так как это лучше поможет понять, как распределены данные, обнаружить выбросы, определить оптимальное количество классов</p>
 </div>
 <div class="section" id="id2">
-<h2>Алгоритмы классификации<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>Методы классификации<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <div class="section" id="id3">
 <h3>Равные интервалы<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
-<p>Этот алгоритм делит данные на равные интервалы и подходит для данных с более-менее равномерным распределением</p>
+<p>Этот метод делит данные на равные интервалы и подходит для данных с более-менее равномерным распределением</p>
 <p>Разбиваем значения на 5 равных интервалов, для этого используем библиотеку mapclassify</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -654,13 +654,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/85d5dc7cd63a8fe5e0733b910f550949c8e7d6aa84f84a53c8a7f443b89ac5b2.png" src="../_images/85d5dc7cd63a8fe5e0733b910f550949c8e7d6aa84f84a53c8a7f443b89ac5b2.png" />
+<img alt="../_images/4d71775db8c7dc2ba21aba0b320965bd5e34ece84c95b06efb336b1f01fb2859.png" src="../_images/4d71775db8c7dc2ba21aba0b320965bd5e34ece84c95b06efb336b1f01fb2859.png" />
 </div>
 </div>
 </div>
 <div class="section" id="id7">
 <h3>Квантиль<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
-<p>Этот алгоритм делит данные так, чтобы в каждом интервале было одинаковое количество значений. Этот метод классификации хорошо подходит для линейно распределенных данных.</p>
+<p>Этот метод делит данные так, чтобы в каждом интервале было одинаковое количество значений. Хорошо подходит для линейно распределенных данных.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_hist_with_intervals</span><span class="p">(</span><span class="n">spb_okrug_UTM</span><span class="p">,</span> <span class="s1">&#39;pop_density&#39;</span><span class="p">,</span> <span class="s1">&#39;quantiles&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -724,7 +724,7 @@ document.write(`
 </div>
 <div class="section" id="id9">
 <h3>Пользовательские интервалы<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
-<p>Можно самостоятельно создать интервалы, которые лучше всего подходят для ваших данных. Чаще всего пользовательские интервалы основаны на одном из статистических алгоритмов классификаций</p>
+<p>Можно самостоятельно создать интервалы, которые лучше всего подходят для ваших данных. Чаще всего пользовательские интервалы основаны на одном из статистических методов классификации</p>
 <p>Давайте создадим собственные интервалы на основе “Естественных границ (по Дженксу)”</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -805,7 +805,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="id10">
-<h3>Сравнение алгоритмов классификации<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<h3>Сравнение методов классификации<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spb_okrug_UTM</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -937,7 +937,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5323fcb1eaa31550a5e8e0637aeea5faa9806dcac1e56dff9d63af87d3d916c3.png" src="../_images/5323fcb1eaa31550a5e8e0637aeea5faa9806dcac1e56dff9d63af87d3d916c3.png" />
+<img alt="../_images/29fe1dbcec8bb5fc96c008a6ee82dcd7e60bfeccd0149ebf51ad277372303e19.png" src="../_images/29fe1dbcec8bb5fc96c008a6ee82dcd7e60bfeccd0149ebf51ad277372303e19.png" />
 </div>
 </div>
 </div>
@@ -949,6 +949,27 @@ document.write(`
 <div class="section" id="id12">
 <h2>Видео раздела<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h2>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lyGVDAd9rM8?si=nmUex27GyVGST__I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_classified_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">scheme</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;BuPu&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Population Density, ppl/sq.km&#39;</span><span class="p">):</span>
+    <span class="c1"># Строим график</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;0.8&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="c1"># Добавляем название</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="c1"># Скрываем координатные оси</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Получаем объект легенды</span>
+    <span class="n">leg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span>
+
+    <span class="c1"># Перемещаем легенду за пределы графика справа</span>
+    <span class="n">leg</span><span class="o">.</span><span class="n">set_bbox_to_anchor</span><span class="p">((</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -1011,7 +1032,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Подготовка данных</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Алгоритмы классификации</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Методы классификации</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Равные интервалы</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">*Дополнение</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Отображаем гистограмму распределения показателя и карту рядом</a></li>
@@ -1023,7 +1044,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Квантиль</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Среднеквадратичное отклонение</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Пользовательские интервалы</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Сравнение алгоритмов классификации</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Сравнение методов классификации</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Итоги</a></li>
